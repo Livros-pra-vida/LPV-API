@@ -10,6 +10,4 @@ class User < ApplicationRecord
   validates :cpf, length: { minimum: 11, maximum: 11 }, if: -> { password.present? }
 
   encrypts :cpf
-
-  before_validation :normalizar_email
 end
