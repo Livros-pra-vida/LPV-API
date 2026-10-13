@@ -18,4 +18,15 @@ end
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  get "/messages", to: "messages#index"
+
+# app/controllers/messages_controller.rb
+  class MessagesController < ApplicationController
+    def index
+      messages = Message.includes(:user).order(id: :desc).limit(50).reverse
+      render json: messages.map(&:payload)
+    end
+  end
+
 end

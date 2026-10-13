@@ -49,6 +49,10 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
+
+  # config/environments/production.rb
+  config.action_cable.allowed_request_origins = [ "https://livros-pra-vida.github.io/livrosPraVida/src/Chat.html", %r{http://localhost:\d+} ]
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

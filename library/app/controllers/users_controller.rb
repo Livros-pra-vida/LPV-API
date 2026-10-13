@@ -76,7 +76,6 @@ class UsersController < ApplicationController
     :telefone,
     :cpf,
     :nascimento,
-    :admin
       ])
     end
 end
