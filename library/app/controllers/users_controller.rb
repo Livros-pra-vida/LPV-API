@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!, only: %i[ index destroy ]
   before_action :set_user, only: %i[ show update destroy ]
 
   # GET /users
@@ -22,6 +23,7 @@ class UsersController < ApplicationController
     if @user&.authenticate(params[:password])
       render json: {
         message: "Login successful",
+        token: @user.generate_token_for(:api_session),
         user: @user
       }, status: :ok
     else
@@ -57,6 +59,8 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
+    return head :forbidden unless current_user.id == @user.id || current_user.admin?
+
     @user.destroy!
   end
 

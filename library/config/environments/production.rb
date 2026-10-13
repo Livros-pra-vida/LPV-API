@@ -51,7 +51,7 @@ Rails.application.configure do
 
 
   # config/environments/production.rb
-  config.action_cable.allowed_request_origins = [ "https://livros-pra-vida.github.io/livrosPraVida/src/Chat.html", %r{http://localhost:\d+} ]
+  config.action_cable.allowed_request_origins = [ "https://livros-pra-vida.github.io", %r{http://localhost:\d+} ]
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
