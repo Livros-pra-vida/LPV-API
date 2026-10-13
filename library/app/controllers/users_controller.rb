@@ -32,15 +32,18 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(user_params)
+     @user = User.new(user_params)
 
-    if @user.save
-       #  render json: @user, status: :created, location: @user
-       redirect_to @user, notice: "Novo usuário criado com sucesso."
-    else
-        #  render json: @user.errors, status: :unprocessable_content
-        render :new, status: :unprocessable_entity
-    end
+  if @user.save
+    render json: {
+      message: "Usuário criado com sucesso",
+      user: @user.as_json(except: [:password_digest])
+    }, status: :created
+  else
+    render json: {
+      errors: @user.errors.full_messages
+    }, status: :unprocessable_entity
+  end
   end
 
   # PATCH/PUT /users/1
@@ -65,6 +68,15 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :username, :email, :password, :password_confirmation, :admin ])
+      params.expect(user: [
+    :username,
+    :email,
+    :password,
+    :password_confirmation,
+    :telefone,
+    :cpf,
+    :nascimento,
+    :admin
+      ])
     end
 end
