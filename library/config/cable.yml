@@ -11,4 +11,3 @@ adapter: test
 
 production:
 adapter: async
-```
