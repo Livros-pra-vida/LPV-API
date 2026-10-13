@@ -16,16 +16,20 @@
 
 
 
-
-
 default: &default
-  url: <%= ENV.fetch("DATABASE_URL") %>
+  adapter: postgresql
+  url: <%= ENV["DATABASE_URL"] %>
 
 development:
   <<: *default
   database: library_development
 
+test:
+  <<: *default
+  database: library_test
 
+production:
+  <<: *default
 
 
 
