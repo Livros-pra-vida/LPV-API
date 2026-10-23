@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  rating: 1
+  bookcase: one
+  author: one
+  release: 2026-08-31
+
+two:
+  title: MyString
+  rating: 1
+  bookcase: two
+  author: two
+  release: 2026-08-31
