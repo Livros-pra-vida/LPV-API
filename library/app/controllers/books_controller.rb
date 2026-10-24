@@ -1,7 +1,7 @@
 class BooksController < ApplicationController
   # GET /books
   def index
-    @books = Book.includes(:author, :estante).order(created_at: :desc)
+    @books = Book.includes(:author, :bookcase).order(created_at: :desc)
     
     # Mapeia cada livro para injetar o nome do autor como string diretamente no JSON
     books_json = @books.map do |book|

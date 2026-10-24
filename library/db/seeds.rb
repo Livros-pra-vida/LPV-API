@@ -1,6 +1,6 @@
 # db/seeds.rb
 
-puts "🧹 Limpando registros antigos do banco de dados..."
+puts "🧹 Limpando registros antigos..."
 News.destroy_all if defined?(News)
 BookListing.destroy_all if defined?(BookListing)
 Book.destroy_all if defined?(Book)
@@ -10,7 +10,7 @@ Bookcase.destroy_all if defined?(Bookcase)
 puts "📚 Criando Estante Padrão..."
 estante = Bookcase.create!(name: "Estante Principal da Loja", limit: 1000)
 
-puts "👤 Criando ou encontrando o Usuário Administrador..."
+puts "👤 Garantindo Usuário Administrador..."
 admin = User.find_by(email: "admin@livrospravida.com") || User.create!(
   username: "admin",
   email: "admin@livrospravida.com",
@@ -21,29 +21,42 @@ admin = User.find_by(email: "admin@livrospravida.com") || User.create!(
   admin: true
 )
 
-puts "📖 Cadastrando 20 Livros no Catálogo Oficial (Loja)..."
+capas = {
+  lotr: "https://covers.openlibrary.org/b/id/12645114-L.jpg",
+  duna: "https://covers.openlibrary.org/b/id/12547148-L.jpg",
+  orwell: "https://covers.openlibrary.org/b/id/12711011-L.jpg",
+  hobbit: "https://covers.openlibrary.org/b/id/12001569-L.jpg",
+  clean_code: "https://covers.openlibrary.org/b/id/12539092-L.jpg",
+  sapiens: "https://covers.openlibrary.org/b/id/12695280-L.jpg",
+  hp: "https://covers.openlibrary.org/b/id/10521270-L.jpg",
+  got: "https://covers.openlibrary.org/b/id/10232402-L.jpg",
+  sherlock: "https://covers.openlibrary.org/b/id/12582875-L.jpg",
+  alchemist: "https://covers.openlibrary.org/b/id/12833522-L.jpg"
+}
+
+puts "📖 Cadastrando 20 Livros no CATÁLOGO OFICIAL DA LOJA..."
 
 livros_catalogo = [
-  { title: "O Senhor dos Anéis: A Sociedade do Anel", author: "J.R.R. Tolkien", genre: "Fantasia", price: 59.90, featured: true, description: "Na Terceira Era da Terra-média, o Hobbit Frodo Bolseiro recebe a missão de destruir o Um Anel.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81h2gWPTYJL.jpg" },
-  { title: "Duna", author: "Frank Herbert", genre: "Ficção Científica", price: 69.90, featured: true, description: "Paul Atreides precisa sobreviver no planeta árido Arrakis para garantir o futuro da humanidade.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
-  { title: "1984", author: "George Orwell", genre: "Ficção Científica", price: 34.90, featured: true, description: "A assustadora distopia sobre o Grande Irmão e o controle total do Estado sobre a vida individual.", image_url: "https://images-na.ssl-images-amazon.com/images/I/819js3EQwbL.jpg" },
-  { title: "O Hobbit", author: "J.R.R. Tolkien", genre: "Fantasia", price: 44.90, featured: true, description: "A aventura inesquecível de Bilbo Bolseiro junto com treze anões e o mago Gandalf.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
-  { title: "Código Limpo (Clean Code)", author: "Robert C. Martin", genre: "Desenvolvimento/Filosofia", price: 89.90, featured: true, description: "Boas práticas, refatoração e padrões de projeto essenciais para todo desenvolvedor de software.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71T1K4G+M3L.jpg" },
-  { title: "O Programador Pragmático", author: "Andrew Hunt", genre: "Desenvolvimento/Filosofia", price: 95.00, featured: true, description: "Da responsabilidade pessoal ao desenvolvimento de carreira no mundo da tecnologia.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71f743sOPoL.jpg" },
-  { title: "A Revolução dos Bichos", author: "George Orwell", genre: "Drama", price: 29.90, featured: false, description: "Uma sátira genial sobre o poder, a corrupção e a revolução dos animais da fazenda.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91BS2O1S-yL.jpg" },
-  { title: "O Nome do Vento", author: "Patrick Rothfuss", genre: "Fantasia", price: 54.90, featured: false, description: "A trajetória de Kvothe, da sua infância em uma trupe de teatro à fama como mago épico.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iP4-3O6kL.jpg" },
-  { title: "Neuromancer", author: "William Gibson", genre: "Ficção Científica", price: 42.00, featured: false, description: "O clássico divisor de águas do gênero Cyberpunk que previu a internet e a inteligência artificial.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91Rst42XJmL.jpg" },
-  { title: "Sapiens: Uma Breve História da Humanidade", author: "Yuval Noah Harari", genre: "História/Biografia", price: 64.90, featured: false, description: "Como a espécie Homo Sapiens conquistou a Terra através da linguagem, ficção e cooperação.", image_url: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg" },
-  { title: "O Guia do Mochileiro das Galáxias", author: "Douglas Adams", genre: "Ficção Científica", price: 39.90, featured: false, description: "As aventuras cômicas e espaciais de Arthur Dent após a destruição da Terra.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81L7-o7uI0L.jpg" },
-  { title: "Harry Potter e a Pedra Filosofal", author: "J.K. Rowling", genre: "Fantasia", price: 49.90, featured: false, description: "O garoto órfão descobre no seu aniversário de 11 anos que é um bruxo aceito em Hogwarts.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD6L.jpg" },
-  { title: "O Iluminado", author: "Stephen King", genre: "Terror/Mistério", price: 52.90, featured: false, description: "Jack Torrance aceita o emprego de zelador no isolado Hotel Overlook com trágicas consequências.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81pCInP7QmL.jpg" },
-  { title: "A Guerra dos Tronos", author: "George R.R. Martin", genre: "Fantasia", price: 74.90, featured: false, description: "A disputa pelo Trono de Ferro entre as grandes casas nobres do continente de Westeros.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91dSM9D26DL.jpg" },
-  { title: "Orgulho e Preconceito", author: "Jane Austen", genre: "Romance", price: 28.90, featured: false, description: "A relação tempestuosa entre Elizabeth Bennet e o misterioso e orgulhoso Sr. Darcy.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71Q1tPupKFL.jpg" },
-  { title: "Fahrenheit 451", author: "Ray Bradbury", genre: "Ficção Científica", price: 38.00, featured: false, description: "Em um futuro opressivo, os bombeiros têm como única função queimar livros proibidos.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71OFqSRFDgL.jpg" },
-  { title: "Os Miseráveis", author: "Victor Hugo", genre: "Drama", price: 79.90, featured: false, description: "A jornada de redenção de Jean Valjean na França conturbada do século XIX.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81k3fO-8FAL.jpg" },
-  { title: "O Alquimista", author: "Paulo Coelho", genre: "Desenvolvimento/Filosofia", price: 32.90, featured: false, description: "A história mística de Santiago, o jovem pastor da Andaluzia em busca de sua Lenda Pessoal.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg" },
-  { title: "Sherlock Holmes: Um Estudo em Vermelho", author: "Arthur Conan Doyle", genre: "Terror/Mistério", price: 24.90, featured: false, description: "O primeiro caso da dupla lendária Sherlock Holmes e Dr. John Watson.", image_url: "https://images-na.ssl-images-amazon.com/images/I/813B1C5zWpL.jpg" },
-  { title: "Dom Casmurro", author: "Machado de Assis", genre: "Romance", price: 22.90, featured: false, description: "Bento Santiago relembra sua juventude e seu amor por Capitu: a dúvida eterna sobre a traição.", image_url: "https://images-na.ssl-images-amazon.com/images/I/61NfXp70r8L.jpg" }
+  { title: "O Senhor dos Anéis: A Sociedade do Anel", author: "J.R.R. Tolkien", genre: "Fantasia", price: 59.90, featured: true, description: "Na Terceira Era da Terra-média, Frodo Bolseiro recebe a missão de destruir o Um Anel.", image_url: capas[:lotr] },
+  { title: "Duna", author: "Frank Herbert", genre: "Ficção Científica", price: 69.90, featured: true, description: "Paul Atreides precisa sobreviver no planeta árido Arrakis.", image_url: capas[:duna] },
+  { title: "1984", author: "George Orwell", genre: "Ficção Científica", price: 34.90, featured: true, description: "A assustadora distopia sobre o Grande Irmão.", image_url: capas[:orwell] },
+  { title: "O Hobbit", author: "J.R.R. Tolkien", genre: "Fantasia", price: 44.90, featured: true, description: "A aventura inesquecível de Bilbo Bolseiro junto com treze anões.", image_url: capas[:hobbit] },
+  { title: "Código Limpo (Clean Code)", author: "Robert C. Martin", genre: "Desenvolvimento/Filosofia", price: 89.90, featured: true, description: "Boas práticas e refatoração essenciais para devs.", image_url: capas[:clean_code] },
+  { title: "Sapiens: Uma Breve História da Humanidade", author: "Yuval Noah Harari", genre: "História/Biografia", price: 64.90, featured: true, description: "Como o Homo Sapiens conquistou a Terra.", image_url: capas[:sapiens] },
+  { title: "Harry Potter e a Pedra Filosofal", author: "J.K. Rowling", genre: "Fantasia", price: 49.90, featured: false, description: "O garoto descobre que é um bruxo aceito em Hogwarts.", image_url: capas[:hp] },
+  { title: "A Guerra dos Tronos", author: "George R.R. Martin", genre: "Fantasia", price: 74.90, featured: false, description: "A disputa pelo Trono de Ferro entre as grandes casas.", image_url: capas[:got] },
+  { title: "Sherlock Holmes: Um Estudo em Vermelho", author: "Arthur Conan Doyle", genre: "Terror/Mistério", price: 24.90, featured: false, description: "O primeiro caso de Sherlock Holmes e Dr. Watson.", image_url: capas[:sherlock] },
+  { title: "O Alquimista", author: "Paulo Coelho", genre: "Desenvolvimento/Filosofia", price: 32.90, featured: false, description: "A jornada mística do jovem pastor Santiago.", image_url: capas[:alchemist] },
+  { title: "Duna: Segunda Parte", author: "Frank Herbert", genre: "Ficção Científica", price: 65.00, featured: false, description: "A continuação da saga épica de Arrakis.", image_url: capas[:duna] },
+  { title: "O Senhor dos Anéis: As Duas Torres", author: "J.R.R. Tolkien", genre: "Fantasia", price: 59.90, featured: false, description: "A Sociedade do Anel foi dissolvida.", image_url: capas[:lotr] },
+  { title: "O Senhor dos Anéis: O Retorno do Rei", author: "J.R.R. Tolkien", genre: "Fantasia", price: 59.90, featured: false, description: "O confronto final entre as forças do bem e do mal.", image_url: capas[:lotr] },
+  { title: "O Guia do Mochileiro das Galáxias", author: "Douglas Adams", genre: "Ficção Científica", price: 39.90, featured: false, description: "Aventuras espaciais cômicas após a destruição da Terra.", image_url: capas[:orwell] },
+  { title: "A Revolução dos Bichos", author: "George Orwell", genre: "Drama", price: 29.90, featured: false, description: "Sátira sobre a corrupção do poder.", image_url: capas[:orwell] },
+  { title: "Neuromancer", author: "William Gibson", genre: "Ficção Científica", price: 42.00, featured: false, description: "O clássico Cyberpunk que previu o ciberespaço.", image_url: capas[:duna] },
+  { title: "O Iluminado", author: "Stephen King", genre: "Terror/Mistério", price: 52.90, featured: false, description: "O isolado Hotel Overlook e suas forças sombrias.", image_url: capas[:sherlock] },
+  { title: "Orgulho e Preconceito", author: "Jane Austen", genre: "Romance", price: 28.90, featured: false, description: "A relação de Elizabeth Bennet e o Sr. Darcy.", image_url: capas[:alchemist] },
+  { title: "Fahrenheit 451", author: "Ray Bradbury", genre: "Ficção Científica", price: 38.00, featured: false, description: "Bombeiros que queimam livros proibidos.", image_url: capas[:orwell] },
+  { title: "Dom Casmurro", author: "Machado de Assis", genre: "Romance", price: 22.90, featured: false, description: "Bento Santiago e a dúvida sobre Capitu.", image_url: capas[:alchemist] }
 ]
 
 livros_catalogo.each do |dados|
@@ -55,35 +68,35 @@ livros_catalogo.each do |dados|
     description: dados[:description],
     image_url: dados[:image_url],
     featured: dados[:featured],
-    rating: 5.0,
+    rating: 5,
     author_id: autor.id,
     bookcase_id: estante.id
   )
 end
 
-puts "🔄 Cadastrando 20 Anúncios P2P da Comunidade (Comprar & Trocar)..."
+puts "🔄 Cadastrando 20 Anúncios P2P (Comprar & Trocar)..."
 
 p2p_anuncios = [
-  { title: "Duna - Volume 1 (Lido 1x, Seminovo)", author: "Frank Herbert", price: 35.00, description: "Anúncio P2P - Exemplar único para venda ou troca na comunidade.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
-  { title: "Box Harry Potter Completo 7 Livros", author: "J.K. Rowling", price: 180.00, description: "Anúncio P2P - Edição especial conservada.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD6L.jpg" },
-  { title: "O Problema dos Três Corpos (Capa Dura)", author: "Cixin Liu", price: 45.00, description: "Anúncio P2P - Aceito troca por outros de Ficção.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91N44B0S5sL.jpg" },
-  { title: "Entendendo Algoritmos - Ilustrado", author: "Aditya Y. Bhargava", price: 50.00, description: "Anúncio P2P - Essencial para estudantes de ADS/Computação.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71V23sMTh3L.jpg" },
-  { title: "Sapiens - Yuval Harari", author: "Yuval Noah Harari", price: 30.00, description: "Anúncio P2P - Leitura fluida e sem grifos.", image_url: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg" },
-  { title: "O Silmarillion - J.R.R. Tolkien", author: "J.R.R. Tolkien", price: 40.00, description: "Anúncio P2P - Seminovo com mapa em perfeito estado.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81-f2M3Tz9L.jpg" },
-  { title: "Mitologia Nórdica - Neil Gaiman", author: "Neil Gaiman", price: 25.00, description: "Anúncio P2P - Mitos vikings recontados por Neil Gaiman.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81W4IskMvGL.jpg" },
-  { title: "A Garota no Trem", author: "Paula Hawkins", price: 20.00, description: "Anúncio P2P - Suspense rápido e envolvente.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S2eKSpP7L.jpg" },
-  { title: "Cem Anos de Solidão", author: "Gabriel García Márquez", price: 32.00, description: "Anúncio P2P - Clássico do realismo fantástico.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S1E8n2UGL.jpg" },
-  { title: "Fundação - Isaac Asimov (Trilogia)", author: "Isaac Asimov", price: 75.00, description: "Anúncio P2P - Coleção imperdível para fãs de Sci-Fi.", image_url: "https://images-na.ssl-images-amazon.com/images/I/819T8mGfveL.jpg" },
-  { title: "O Hobbit - Edição Especial de Luxo", author: "J.R.R. Tolkien", price: 60.00, description: "Anúncio P2P - Capa dura com detalhes dourados.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
-  { title: "Estruturas de Dados e Algoritmos em Java", author: "Robert Lafore", price: 85.00, description: "Anúncio P2P - Ótimo para disciplinas de programação.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71T1K4G+M3L.jpg" },
-  { title: "O Poder do Hábito - Charles Duhigg", author: "Charles Duhigg", price: 28.00, description: "Anúncio P2P - Excelente livro sobre psicologia de hábitos.", image_url: "https://images-na.ssl-images-amazon.com/images/I/818q-L0Xo1L.jpg" },
-  { title: "A Bússola de Ouro - Philip Pullman", author: "Philip Pullman", price: 22.00, description: "Anúncio P2P - Trilogia Fronteiras do Universo.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81bS8iE1oEL.jpg" },
-  { title: "Miseráveis - Victor Hugo Vol. 1 e 2", author: "Victor Hugo", price: 50.00, description: "Anúncio P2P - Obra completa em 2 volumes.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81k3fO-8FAL.jpg" },
-  { title: "Cultura Code - Daniel Coyle", author: "Daniel Coyle", price: 30.00, description: "Anúncio P2P - Liderança e dinâmicas de equipes de sucesso.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg" },
-  { title: "Coraline - Neil Gaiman (Edição Ilustrada)", author: "Neil Gaiman", price: 38.00, description: "Anúncio P2P - Edição especial ilustrada.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81pCInP7QmL.jpg" },
-  { title: "Maus - Art Spiegelman", author: "Art Spiegelman", price: 42.00, description: "Anúncio P2P - HQ histórica vencedora do Prêmio Pulitzer.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81BS2O1S-yL.jpg" },
-  { title: "Drácula - Bram Stoker (DarkSide)", author: "Bram Stoker", price: 48.00, description: "Anúncio P2P - Edição de luxo DarkSide.", image_url: "https://images-na.ssl-images-amazon.com/images/I/813B1C5zWpL.jpg" },
-  { title: "O Milagre da Manhã", author: "Hal Elrod", price: 18.00, description: "Anúncio P2P - Desenvolvimento pessoal e rotina.", image_url: "https://images-na.ssl-images-amazon.com/images/I/61NfXp70r8L.jpg" }
+  { title: "Duna - Volume 1 (Seminovo)", author: "Frank Herbert", price: 35.00, description: "Exemplar único para venda ou troca na comunidade.", image_url: capas[:duna] },
+  { title: "Box Harry Potter Completo", author: "J.K. Rowling", price: 180.00, description: "Edição em excelente estado de conservação.", image_url: capas[:hp] },
+  { title: "O Senhor dos Anéis (Capa Dura)", author: "J.R.R. Tolkien", price: 85.00, description: "Aceito trocas por livros de Programação / TI.", image_url: capas[:lotr] },
+  { title: "Clean Code - Código Limpo", author: "Robert C. Martin", price: 55.00, description: "Seminovo, essencial para quem cursa ADS.", image_url: capas[:clean_code] },
+  { title: "Sapiens - Yuval Harari", author: "Yuval Noah Harari", price: 30.00, description: "Leitura fluida e sem rasuras.", image_url: capas[:sapiens] },
+  { title: "1984 - George Orwell", author: "George Orwell", price: 20.00, description: "Lido apenas uma vez.", image_url: capas[:orwell] },
+  { title: "O Hobbit", author: "J.R.R. Tolkien", price: 25.00, description: "Ótimo estado de conservação.", image_url: capas[:hobbit] },
+  { title: "A Guerra dos Tronos Vol. 1", author: "George R.R. Martin", price: 40.00, description: "Livro em perfeito estado.", image_url: capas[:got] },
+  { title: "Sherlock Holmes Coleção", author: "Arthur Conan Doyle", price: 18.00, description: "Disponível para troca rápida.", image_url: capas[:sherlock] },
+  { title: "O Alquimista", author: "Paulo Coelho", price: 15.00, description: "Edição pocket conservada.", image_url: capas[:alchemist] },
+  { title: "Duna - Edição Especial", author: "Frank Herbert", price: 45.00, description: "Livro novo na folha.", image_url: capas[:duna] },
+  { title: "Clean Architecture", author: "Robert C. Martin", price: 65.00, description: "Livro de TI para troca/venda.", image_url: capas[:clean_code] },
+  { title: "Sapiens Ilustrado", author: "Yuval Harari", price: 40.00, description: "Edição em quadrinhos.", image_url: capas[:sapiens] },
+  { title: "Harry Potter e o Cálice de Fogo", author: "J.K. Rowling", price: 30.00, description: "Usado, bom estado.", image_url: capas[:hp] },
+  { title: "O Silmarillion", author: "J.R.R. Tolkien", price: 35.00, description: "Com mapa original incluso.", image_url: capas[:lotr] },
+  { title: "A Revolução dos Bichos", author: "George Orwell", price: 15.00, description: "Edição econômica.", image_url: capas[:orwell] },
+  { title: "O Guia do Mochileiro", author: "Douglas Adams", price: 22.00, description: "Ideal para fãs de ficção.", image_url: capas[:orwell] },
+  { title: "Fahrenheit 451", author: "Ray Bradbury", price: 25.00, description: "Capa brochura perfeita.", image_url: capas[:orwell] },
+  { title: "Dom Casmurro", author: "Machado de Assis", price: 12.00, description: "Clássico para estudantes.", image_url: capas[:alchemist] },
+  { title: "Neuromancer Cyberpunk", author: "William Gibson", price: 28.00, description: "Livro seminovo.", image_url: capas[:duna] }
 ]
 
 p2p_anuncios.each do |p2p|
@@ -98,7 +111,7 @@ p2p_anuncios.each do |p2p|
   )
 end
 
-puts "📰 Cadastrando Notícias Literárias & Geek na aba Novidades..."
+puts "📰 Cadastrando Notícias Literárias & Geek..."
 
 noticias = [
   {
@@ -148,4 +161,4 @@ if defined?(News)
   end
 end
 
-puts "🎉 SUCESSO ABSOLUTO! Banco de dados PostgreSQL completamente povoado para a apresentação!"
+puts "🎉 SUCESSO! Banco de dados completamente povoado!"
