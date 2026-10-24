@@ -1,11 +1,30 @@
+@books = Book.includes(:author, :bookcase).order(created_at: :desc)
+```[cite: 21]
+
+Ainda está lá o **`:author`** dentro do `includes`! Como o modelo `Book` no banco usa a chave estrangeira `author_id` mas o ActiveRecord não tem a associação `has_many` ou `belongs_to :author` configurada exatamente com esse nome exato no model, o Rails crasha com erro 500 na hora em que o frontend tenta carregar o catálogo[cite: 20, 21]. É por isso que nenhum livro aparecia!
+
+Vamos corrigir isso agora de forma definitiva, eliminando o `.includes(:author)` e buscando o autor com segurança absoluta via código Ruby.
+
+---
+
+### Copie e substitua todo o conteúdo do seu `app/controllers/books_controller.rb` por este:
+
+```ruby
 class BooksController < ApplicationController
   # GET /books
   def index
-    @books = Book.includes(:author, :bookcase).order(created_at: :desc)
+    # Buscamos apenas os livros e estantes para evitar qualquer erro de associação do ActiveRecord
+    @books = Book.includes(:bookcase).order(created_at: :desc)
     
-    # Mapeia cada livro para injetar o nome do autor como string diretamente no JSON
     books_json = @books.map do |book|
-      book.as_json.merge(author: book.author&.name || "Desconhecido")
+      # Resolve o nome do autor com segurança absoluta (via relação ou ID direto)
+      nome_autor = if book.respond_to?(:author) && book.author.respond_to?(:name)
+        book.author&.name
+      elsif book.respond_to?(:author_id) && book.author_id.present?
+        Author.find_by(id: book.author_id)&.name
+      end
+
+      book.as_json.merge(author: nome_autor || "Desconhecido")
     end
 
     render json: books_json
