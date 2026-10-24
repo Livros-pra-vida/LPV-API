@@ -1,90 +1,67 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[ index destroy me ]
-  before_action :set_user, only: %i[ show update destroy ]
+  before_action :set_user, only: [:show, :update, :destroy]
 
-  # GET /users
-  def index
-    # Apenas o Admin pode listar todos os usuários cadastrados
-    return render json: { error: "Acesso negado" }, status: :forbidden unless current_user&.admin?
-
-    @users = User.all
-    render json: @users
+  # POST /users/login
+  def login
+    @user = User.find_by(email: params[:email])
+    if @user && @user.authenticate(params[:password])
+      token = @user.signed_id(purpose: :api_session, expires_in: 12.hours)
+      render json: { 
+        token: token, 
+        user: @user.serializable_hash(except: [:password_digest]),
+        message: "Login realizado com sucesso!" 
+      }, status: :ok
+    else
+      render json: { error: "E-mail ou senha inválidos" }, status: :unauthorized
+    end
   end
 
   # GET /users/me
   def me
-    render json: current_user
+    token = request.headers['Authorization']&.split(' ')&.last
+    @user = User.find_signed(token, purpose: :api_session)
+    if @user
+      render json: @user, status: :ok
+    else
+      render json: { error: "Não autorizado" }, status: :unauthorized
+    end
   end
 
-  # GET /users/1
+  # GET /users
+  def index
+    @users = User.all
+    render json: @users
+  end
+
+  # GET /users/:id
   def show
     render json: @user
-  end
-
-  # POST /users/login
-  def login
-    @user = User.find_by(email: params[:email]) || User.find_by(username: params[:email])
-
-    if @user&.authenticate(params[:password])
-      render json: {
-        message: "Login realizado com sucesso",
-        token: @user.generate_token_for(:api_session),
-        user: {
-          id: @user.id,
-          username: @user.username,
-          email: @user.email,
-          admin: @user.admin
-        }
-      }, status: :ok
-    else
-      render json: { error: "E-mail ou senha incorretos" }, status: :unauthorized
-    end
   end
 
   # POST /users
   def create
     @user = User.new(user_params)
-
     if @user.save
-      secret_key = Rails.application.secret_key_base || "chave_secreta_fallback"
-      payload = {
-        user_id: @user.id,
-        admin: @user.admin,
-        exp: 24.hours.from_now.to_i
-      }
-      token_jwt = JWT.encode(payload, secret_key, 'HS256')
-
-      render json: {
-        message: "Usuário criado com sucesso",
-        token: token_jwt,
-        user: {
-          id: @user.id,
-          username: @user.username,
-          email: @user.email,
-          admin: @user.admin
-        }
-      }, status: :created
+      token = @user.signed_id(purpose: :api_session, expires_in: 12.hours)
+      render json: { token: token, user: @user }, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /users/1
+  # PATCH/PUT /users/:id
   def update
     if @user.update(user_params)
-      render json: @user
+      render json: @user, status: :ok
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # DELETE /users/1
+  # DELETE /users/:id
   def destroy
-    # O próprio usuário pode apagar sua conta, OU o Admin pode apagar qualquer conta
-    return render json: { error: "Acesso negado" }, status: :forbidden unless current_user&.id == @user.id || current_user&.admin?
-
-    @user.destroy!
-    render json: { message: "Usuário removido com sucesso" }, status: :ok
+    @user.destroy
+    head :no_content
   end
 
   private
@@ -95,9 +72,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(
-      :username, :email, :password, :password_confirmation,
-      :telefone, :cpf, :nascimento,
-      :cep, :rua, :numero, :bairro, :cidade, :pagamento_favorito
+      :username, :email, :password, :telefone, :nascimento, 
+      :cpf, :cep, :rua, :numero, :bairro, :cidade, 
+      :pagamento_favorito, :avatar_url, :admin
     )
   end
 end
