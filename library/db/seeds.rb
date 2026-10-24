@@ -24,7 +24,7 @@ admin = User.find_by(email: "admin@livrospravida.com") || User.create!(
 puts "📖 Cadastrando 20 Livros no Catálogo Oficial (Loja)..."
 
 livros_catalogo = [
-  { title: "O Senhor dos Anéis: A Sociedade do Anel", author: "J.R.R. Tolkien", genre: "Fantasia", price: 59.90, featured: true, description: "Na Terceira Era da Terra-média, o Hobite Frodo Bolseiro recebe a missão de destruir o Um Anel.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81h2gWPTYJL.jpg" },
+  { title: "O Senhor dos Anéis: A Sociedade do Anel", author: "J.R.R. Tolkien", genre: "Fantasia", price: 59.90, featured: true, description: "Na Terceira Era da Terra-média, o Hobbit Frodo Bolseiro recebe a missão de destruir o Um Anel.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81h2gWPTYJL.jpg" },
   { title: "Duna", author: "Frank Herbert", genre: "Ficção Científica", price: 69.90, featured: true, description: "Paul Atreides precisa sobreviver no planeta árido Arrakis para garantir o futuro da humanidade.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
   { title: "1984", author: "George Orwell", genre: "Ficção Científica", price: 34.90, featured: true, description: "A assustadora distopia sobre o Grande Irmão e o controle total do Estado sobre a vida individual.", image_url: "https://images-na.ssl-images-amazon.com/images/I/819js3EQwbL.jpg" },
   { title: "O Hobbit", author: "J.R.R. Tolkien", genre: "Fantasia", price: 44.90, featured: true, description: "A aventura inesquecível de Bilbo Bolseiro junto com treze anões e o mago Gandalf.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
@@ -64,34 +64,36 @@ end
 puts "🔄 Cadastrando 20 Anúncios P2P da Comunidade (Comprar & Trocar)..."
 
 p2p_anuncios = [
-  { title: "Duna - Volume 1 (Lido 1x, Seminovo)", price: 35.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
-  { title: "Box Harry Potter Completo 7 Livros", price: 180.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD6L.jpg" },
-  { title: "O Problema dos Três Corpos (Capa Dura)", price: 45.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/91N44B0S5sL.jpg" },
-  { title: "Entendendo Algoritmos - Ilustrado", price: 50.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/71V23sMTh3L.jpg" },
-  { title: "Sapiens - Yuval Harari", price: 30.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg" },
-  { title: "O Silmarillion - J.R.R. Tolkien", price: 40.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81-f2M3Tz9L.jpg" },
-  { title: "Mitologia Nórdica - Neil Gaiman", price: 25.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81W4IskMvGL.jpg" },
-  { title: "A Garota no Trem", price: 20.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S2eKSpP7L.jpg" },
-  { title: "Cem Anos de Solidão - Gabriel García Márquez", price: 32.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S1E8n2UGL.jpg" },
-  { title: "Fundação - Isaac Asimov (Trilogia)", price: 75.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/819T8mGfveL.jpg" },
-  { title: "O Hobbit - Edição Especial de Luxo", price: 60.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
-  { title: "Estruturas de Dados e Algoritmos em Java", price: 85.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/71T1K4G+M3L.jpg" },
-  { title: "O Poder do Hábito - Charles Duhigg", price: 28.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/818q-L0Xo1L.jpg" },
-  { title: "A Bússola de Ouro - Philip Pullman", price: 22.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81bS8iE1oEL.jpg" },
-  { title: "Miseráveis - Victor Hugo Vol. 1 e 2", price: 50.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81k3fO-8FAL.jpg" },
-  { title: "Cultura Code - Daniel Coyle", price: 30.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg" },
-  { title: "Coraline - Neil Gaiman (Edição Ilustrada)", price: 38.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81pCInP7QmL.jpg" },
-  { title: "Maus - Art Spiegelman", price: 42.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81BS2O1S-yL.jpg" },
-  { title: "Drácula - Bram Stoker (DarkSide)", price: 48.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/813B1C5zWpL.jpg" },
-  { title: "O Milagre da Manhã", price: 18.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/61NfXp70r8L.jpg" }
+  { title: "Duna - Volume 1 (Lido 1x, Seminovo)", author: "Frank Herbert", price: 35.00, description: "Anúncio P2P - Exemplar único para venda ou troca na comunidade.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
+  { title: "Box Harry Potter Completo 7 Livros", author: "J.K. Rowling", price: 180.00, description: "Anúncio P2P - Edição especial conservada.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD6L.jpg" },
+  { title: "O Problema dos Três Corpos (Capa Dura)", author: "Cixin Liu", price: 45.00, description: "Anúncio P2P - Aceito troca por outros de Ficção.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91N44B0S5sL.jpg" },
+  { title: "Entendendo Algoritmos - Ilustrado", author: "Aditya Y. Bhargava", price: 50.00, description: "Anúncio P2P - Essencial para estudantes de ADS/Computação.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71V23sMTh3L.jpg" },
+  { title: "Sapiens - Yuval Harari", author: "Yuval Noah Harari", price: 30.00, description: "Anúncio P2P - Leitura fluida e sem grifos.", image_url: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg" },
+  { title: "O Silmarillion - J.R.R. Tolkien", author: "J.R.R. Tolkien", price: 40.00, description: "Anúncio P2P - Seminovo com mapa em perfeito estado.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81-f2M3Tz9L.jpg" },
+  { title: "Mitologia Nórdica - Neil Gaiman", author: "Neil Gaiman", price: 25.00, description: "Anúncio P2P - Mitos vikings recontados por Neil Gaiman.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81W4IskMvGL.jpg" },
+  { title: "A Garota no Trem", author: "Paula Hawkins", price: 20.00, description: "Anúncio P2P - Suspense rápido e envolvente.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S2eKSpP7L.jpg" },
+  { title: "Cem Anos de Solidão", author: "Gabriel García Márquez", price: 32.00, description: "Anúncio P2P - Clássico do realismo fantástico.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S1E8n2UGL.jpg" },
+  { title: "Fundação - Isaac Asimov (Trilogia)", author: "Isaac Asimov", price: 75.00, description: "Anúncio P2P - Coleção imperdível para fãs de Sci-Fi.", image_url: "https://images-na.ssl-images-amazon.com/images/I/819T8mGfveL.jpg" },
+  { title: "O Hobbit - Edição Especial de Luxo", author: "J.R.R. Tolkien", price: 60.00, description: "Anúncio P2P - Capa dura com detalhes dourados.", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
+  { title: "Estruturas de Dados e Algoritmos em Java", author: "Robert Lafore", price: 85.00, description: "Anúncio P2P - Ótimo para disciplinas de programação.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71T1K4G+M3L.jpg" },
+  { title: "O Poder do Hábito - Charles Duhigg", author: "Charles Duhigg", price: 28.00, description: "Anúncio P2P - Excelente livro sobre psicologia de hábitos.", image_url: "https://images-na.ssl-images-amazon.com/images/I/818q-L0Xo1L.jpg" },
+  { title: "A Bússola de Ouro - Philip Pullman", author: "Philip Pullman", price: 22.00, description: "Anúncio P2P - Trilogia Fronteiras do Universo.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81bS8iE1oEL.jpg" },
+  { title: "Miseráveis - Victor Hugo Vol. 1 e 2", author: "Victor Hugo", price: 50.00, description: "Anúncio P2P - Obra completa em 2 volumes.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81k3fO-8FAL.jpg" },
+  { title: "Cultura Code - Daniel Coyle", author: "Daniel Coyle", price: 30.00, description: "Anúncio P2P - Liderança e dinâmicas de equipes de sucesso.", image_url: "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg" },
+  { title: "Coraline - Neil Gaiman (Edição Ilustrada)", author: "Neil Gaiman", price: 38.00, description: "Anúncio P2P - Edição especial ilustrada.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81pCInP7QmL.jpg" },
+  { title: "Maus - Art Spiegelman", author: "Art Spiegelman", price: 42.00, description: "Anúncio P2P - HQ histórica vencedora do Prêmio Pulitzer.", image_url: "https://images-na.ssl-images-amazon.com/images/I/81BS2O1S-yL.jpg" },
+  { title: "Drácula - Bram Stoker (DarkSide)", author: "Bram Stoker", price: 48.00, description: "Anúncio P2P - Edição de luxo DarkSide.", image_url: "https://images-na.ssl-images-amazon.com/images/I/813B1C5zWpL.jpg" },
+  { title: "O Milagre da Manhã", author: "Hal Elrod", price: 18.00, description: "Anúncio P2P - Desenvolvimento pessoal e rotina.", image_url: "https://images-na.ssl-images-amazon.com/images/I/61NfXp70r8L.jpg" }
 ]
 
 p2p_anuncios.each do |p2p|
   BookListing.create!(
     title: p2p[:title],
+    author: p2p[:author],
     price: p2p[:price],
-    intent: p2p[:intent],
+    description: p2p[:description],
     image_url: p2p[:image_url],
+    featured: false,
     user_id: admin.id
   )
 end
