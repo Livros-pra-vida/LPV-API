@@ -1,23 +1,9 @@
-@books = Book.includes(:author, :bookcase).order(created_at: :desc)
-```[cite: 21]
-
-Ainda está lá o **`:author`** dentro do `includes`! Como o modelo `Book` no banco usa a chave estrangeira `author_id` mas o ActiveRecord não tem a associação `has_many` ou `belongs_to :author` configurada exatamente com esse nome exato no model, o Rails crasha com erro 500 na hora em que o frontend tenta carregar o catálogo[cite: 20, 21]. É por isso que nenhum livro aparecia!
-
-Vamos corrigir isso agora de forma definitiva, eliminando o `.includes(:author)` e buscando o autor com segurança absoluta via código Ruby.
-
----
-
-### Copie e substitua todo o conteúdo do seu `app/controllers/books_controller.rb` por este:
-
-```ruby
 class BooksController < ApplicationController
   # GET /books
   def index
-    # Buscamos apenas os livros e estantes para evitar qualquer erro de associação do ActiveRecord
     @books = Book.includes(:bookcase).order(created_at: :desc)
     
     books_json = @books.map do |book|
-      # Resolve o nome do autor com segurança absoluta (via relação ou ID direto)
       nome_autor = if book.respond_to?(:author) && book.author.respond_to?(:name)
         book.author&.name
       elsif book.respond_to?(:author_id) && book.author_id.present?
@@ -34,10 +20,7 @@ class BooksController < ApplicationController
   def create
     nome_autor = params.dig(:book, :author)
     
-    # Busca ou cria o autor na tabela 'authors'
     autor = Author.find_or_create_by!(name: nome_autor) if nome_autor.present?
-    
-    # Garante uma estante padrão para satisfazer a relação do banco
     estante = Bookcase.first || Bookcase.create!(name: "Estante Geral da Loja", limit: 500)
 
     book = Book.new(
