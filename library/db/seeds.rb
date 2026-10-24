@@ -64,33 +64,32 @@ end
 puts "🔄 Cadastrando 20 Anúncios P2P da Comunidade (Comprar & Trocar)..."
 
 p2p_anuncios = [
-  { title: "Duna - Volume 1 (Lido 1x, Seminovo)", price: 35.00, condition: "Seminovo", intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
-  { title: "Box Harry Potter Completo 7 Livros", price: 180.00, condition: "Usado - Bom Estado", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD6L.jpg" },
-  { title: "O Problema dos Três Corpos (Capa Dura)", price: 45.00, condition: "Novo", intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/91N44B0S5sL.jpg" },
-  { title: "Entendendo Algoritmos - Ilustrado", price: 50.00, condition: "Seminovo", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/71V23sMTh3L.jpg" },
-  { title: "Sapiens - Yuval Harari", price: 30.00, condition: "Usado", intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg" },
-  { title: "O Silmarillion - J.R.R. Tolkien", price: 40.00, condition: "Seminovo", intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81-f2M3Tz9L.jpg" },
-  { title: "Mitologia Nórdica - Neil Gaiman", price: 25.00, condition: "Seminovo", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81W4IskMvGL.jpg" },
-  { title: "A Garota no Trem", price: 20.00, condition: "Usado", intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S2eKSpP7L.jpg" },
-  { title: "Cem Anos de Solidão - Gabriel García Márquez", price: 32.00, condition: "Seminovo", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S1E8n2UGL.jpg" },
-  { title: "Fundação - Isaac Asimov (Trilogia)", price: 75.00, condition: "Seminovo", intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/819T8mGfveL.jpg" },
-  { title: "O Hobbit - Edição Especial de Luxo", price: 60.00, condition: "Novo na Folha", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
-  { title: "Estruturas de Dados e Algoritmos em Java", price: 85.00, condition: "Usado - Marcas de Lápis", intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/71T1K4G+M3L.jpg" },
-  { title: "O Poder do Hábito - Charles Duhigg", price: 28.00, condition: "Seminovo", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/818q-L0Xo1L.jpg" },
-  { title: "A Bússola de Ouro - Philip Pullman", price: 22.00, condition: "Usado", intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81bS8iE1oEL.jpg" },
-  { title: "Miseráveis - Victor Hugo Vol. 1 e 2", price: 50.00, condition: "Seminovo", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81k3fO-8FAL.jpg" },
-  { title: "Cultura Code - Daniel Coyle", price: 30.00, condition: "Novo", intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg" },
-  { title: "Coraline - Neil Gaiman (Edição Ilustrada)", price: 38.00, condition: "Seminovo", intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81pCInP7QmL.jpg" },
-  { title: "Maus - Art Spiegelman", price: 42.00, condition: "Seminovo", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81BS2O1S-yL.jpg" },
-  { title: "Drácula - Bram Stoker (DarkSide)", price: 48.00, condition: "Novo com Lacre", intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/813B1C5zWpL.jpg" },
-  { title: "O Milagre da Manhã", price: 18.00, condition: "Usado", intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/61NfXp70r8L.jpg" }
+  { title: "Duna - Volume 1 (Lido 1x, Seminovo)", price: 35.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81zE42gT33L.jpg" },
+  { title: "Box Harry Potter Completo 7 Livros", price: 180.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81iqZ2HHD6L.jpg" },
+  { title: "O Problema dos Três Corpos (Capa Dura)", price: 45.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/91N44B0S5sL.jpg" },
+  { title: "Entendendo Algoritmos - Ilustrado", price: 50.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/71V23sMTh3L.jpg" },
+  { title: "Sapiens - Yuval Harari", price: 30.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg" },
+  { title: "O Silmarillion - J.R.R. Tolkien", price: 40.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81-f2M3Tz9L.jpg" },
+  { title: "Mitologia Nórdica - Neil Gaiman", price: 25.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81W4IskMvGL.jpg" },
+  { title: "A Garota no Trem", price: 20.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S2eKSpP7L.jpg" },
+  { title: "Cem Anos de Solidão - Gabriel García Márquez", price: 32.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81S1E8n2UGL.jpg" },
+  { title: "Fundação - Isaac Asimov (Trilogia)", price: 75.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/819T8mGfveL.jpg" },
+  { title: "O Hobbit - Edição Especial de Luxo", price: 60.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/91M9xPfd13L.jpg" },
+  { title: "Estruturas de Dados e Algoritmos em Java", price: 85.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/71T1K4G+M3L.jpg" },
+  { title: "O Poder do Hábito - Charles Duhigg", price: 28.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/818q-L0Xo1L.jpg" },
+  { title: "A Bússola de Ouro - Philip Pullman", price: 22.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81bS8iE1oEL.jpg" },
+  { title: "Miseráveis - Victor Hugo Vol. 1 e 2", price: 50.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81k3fO-8FAL.jpg" },
+  { title: "Cultura Code - Daniel Coyle", price: 30.00, intent: "Venda/Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/71aFt4+OTOL.jpg" },
+  { title: "Coraline - Neil Gaiman (Edição Ilustrada)", price: 38.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/81pCInP7QmL.jpg" },
+  { title: "Maus - Art Spiegelman", price: 42.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/81BS2O1S-yL.jpg" },
+  { title: "Drácula - Bram Stoker (DarkSide)", price: 48.00, intent: "Venda", image_url: "https://images-na.ssl-images-amazon.com/images/I/813B1C5zWpL.jpg" },
+  { title: "O Milagre da Manhã", price: 18.00, intent: "Troca", image_url: "https://images-na.ssl-images-amazon.com/images/I/61NfXp70r8L.jpg" }
 ]
 
 p2p_anuncios.each do |p2p|
   BookListing.create!(
     title: p2p[:title],
     price: p2p[:price],
-    condition: p2p[:condition],
     intent: p2p[:intent],
     image_url: p2p[:image_url],
     user_id: admin.id
