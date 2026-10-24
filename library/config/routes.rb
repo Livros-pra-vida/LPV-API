@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   post "users/login", to: "users#login"
   get "users/me", to: "users#me"
+  get "run_seeds", to: "application#run_seeds"
   
   resources :users
   resources :books, only: [:index, :create, :update, :destroy]

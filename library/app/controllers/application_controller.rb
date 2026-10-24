@@ -1,4 +1,11 @@
 class ApplicationController < ActionController::API
+  def run_seeds
+    Rails.application.load_seed
+    render json: { message: "🎉 Base de dados povoada com sucesso via seeds!" }, status: :ok
+  rescue => e
+    render json: { error: e.message }, status: :internal_server_error
+  end
+
   private
 
   def current_user
