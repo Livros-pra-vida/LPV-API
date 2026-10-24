@@ -2,26 +2,43 @@ class BookListingsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :update, :destroy]
 
   def index
-    @listings = BookListing.order(created_at: :desc)
-    render json: @listings
+    @listings = BookListing.includes(:user).order(created_at: :desc)
+    render json: @listings.map { |listing| {
+      id: listing.id,
+      title: listing.title,
+      author: listing.author,
+      price: listing.price,
+      image_url: listing.image_url,
+      featured: listing.featured,
+      user_id: listing.user_id,
+      username: listing.user&.username || "Anônimo",
+      created_at: listing.created_at
+    }}
   end
 
   def create
     listing = current_user.book_listings.build(listing_params)
     if listing.save
-      render json: listing, status: :created
+      render json: {
+        id: listing.id,
+        title: listing.title,
+        author: listing.author,
+        price: listing.price,
+        image_url: listing.image_url,
+        featured: listing.featured,
+        user_id: listing.user_id,
+        username: current_user.username
+      }, status: :created
     else
       render json: { errors: listing.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # Permite ao Admin alterar o destaque (featured) na Home
   def update
     listing = BookListing.find_by(id: params[:id])
     return render json: { error: "Anúncio não encontrado" }, status: :not_found unless listing
 
-    # Se for alteração de destaque, exige permissão de Admin
-    if params[:book_listing][:featured] != nil
+    if params[:book_listing] && params[:book_listing][:featured] != nil
       return render json: { error: "Apenas administradores podem gerenciar destaques" }, status: :forbidden unless current_user&.admin?
     end
 
