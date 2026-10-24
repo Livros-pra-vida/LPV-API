@@ -1,7 +1,8 @@
 class BooksController < ApplicationController
   # GET /books
   def index
-    @books = Book.includes(:bookcase).order(created_at: :desc)
+    # Busca apenas os livros ordenados, sem nenhuma associação que possa falhar
+    @books = Book.order(created_at: :desc)
     
     books_json = @books.map do |book|
       nome_autor = if book.respond_to?(:author) && book.author.respond_to?(:name)
