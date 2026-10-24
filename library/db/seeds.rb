@@ -1,18 +1,16 @@
 # db/seeds.rb
 
-# 1. Garantir Usuário Admin Principal
+# 1. Garantir Utilizador Admin Principal com Senha Atualizada
 admin = User.find_or_initialize_by(email: 'admin@livrospravida.com')
 
-admin.assign_attributes(
-  username: 'admin',
-  cpf: '12345678901',
-  password: 'admin123',
-  password_confirmation: 'admin123',
-  admin: true
-)
+admin.username = 'admin'
+admin.cpf = '12345678901'
+admin.password = 'admin123'
+admin.password_confirmation = 'admin123'
+admin.admin = true
 
 if admin.save
-  puts "✅ Usuário Admin garantido no banco: #{admin.email}"
+  puts "✅ Senha do Admin atualizada com sucesso para 'admin123': #{admin.email}"
 else
   puts "⚠️ Erro ao salvar Admin: #{admin.errors.full_messages.join(', ')}"
 end
