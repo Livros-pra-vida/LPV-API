@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
   private
 
-  # Usuário dono do token enviado no header "Authorization: Bearer <token>"
   def current_user
     @current_user ||= User.find_by_token_for(:api_session, bearer_token)
   end

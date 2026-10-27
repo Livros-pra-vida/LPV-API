@@ -1,23 +1,20 @@
 Rails.application.routes.draw do
+  post "users/login", to: "users#login"
+  get "users/me", to: "users#me"
+  
   resources :users
-  resources :books
+  resources :books, only: [:index, :create, :update, :destroy]
+  resources :book_listings, only: [:index, :create, :update, :destroy]
+  resources :news, only: [:index, :create, :update, :destroy]
+  
   resources :authors do
     get "books", to: "books#index"
-
-    # O # serve para chamar um método que está no controller do item antes da #
     get "books/:id", to: "books#teste"
-end
+  end
 
-  post "users/login", to: "users#login"
   resources :bookcases
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :messages, only: [:index, :create, :destroy]
+  resources :favorites, only: [:index, :create, :destroy]
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
-
-  get "/messages", to: "messages#index"
 end
