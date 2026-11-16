@@ -1,9 +1,13 @@
 class AuthorsController < ApplicationController
+  # Autores são um cadastro compartilhado: qualquer usuário logado lê e cria,
+  # mas só admin edita ou apaga (para ninguém bagunçar o autor de outras pessoas).
+  before_action :authenticate_user!
+  before_action :require_admin!, only: %i[ update destroy ]
   before_action :set_author, only: %i[ show update destroy ]
 
   # GET /authors
   def index
-    @authors = Author.all
+    @authors = Author.order(:name)
 
     render json: @authors
   end
@@ -20,7 +24,7 @@ class AuthorsController < ApplicationController
     if @author.save
       render json: @author, status: :created, location: @author
     else
-      render json: @author.errors, status: :unprocessable_content
+      render json: { errors: @author.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -29,19 +33,24 @@ class AuthorsController < ApplicationController
     if @author.update(author_params)
       render json: @author
     else
-      render json: @author.errors, status: :unprocessable_content
+      render json: { errors: @author.errors.full_messages }, status: :unprocessable_content
     end
   end
 
   # DELETE /authors/1
   def destroy
     @author.destroy!
+    head :no_content
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_author
       @author = Author.find(params.expect(:id))
+    end
+
+    def require_admin!
+      head :forbidden unless current_user.admin?
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,26 +1,25 @@
 class BookcasesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_bookcase, only: %i[ show update destroy ]
 
-  # GET /bookcases
+  # GET /bookcases  (só as estantes do usuário logado)
   def index
-    @bookcases = Bookcase.all
-
-    render json: @bookcases
+    render json: current_user.bookcases.includes(:books).order(:id)
   end
 
-  # GET /bookcases/1
+  # GET /bookcases/1  (estante + livros com o nome do autor)
   def show
-    render json: @bookcase
+    render json: @bookcase, include: :books
   end
 
-  # POST /bookcases
+  # POST /bookcases  (o dono é sempre o usuário logado; user_id nunca vem do cliente)
   def create
-    @bookcase = Bookcase.new(bookcase_params)
+    @bookcase = current_user.bookcases.build(bookcase_params)
 
     if @bookcase.save
       render json: @bookcase, status: :created, location: @bookcase
     else
-      render json: @bookcase.errors, status: :unprocessable_content
+      render json: { errors: @bookcase.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -29,23 +28,23 @@ class BookcasesController < ApplicationController
     if @bookcase.update(bookcase_params)
       render json: @bookcase
     else
-      render json: @bookcase.errors, status: :unprocessable_content
+      render json: { errors: @bookcase.errors.full_messages }, status: :unprocessable_content
     end
   end
 
-  # DELETE /bookcases/1
+  # DELETE /bookcases/1  (apaga também os livros da estante)
   def destroy
     @bookcase.destroy!
+    head :no_content
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Busca somente entre as estantes do usuário logado: estante de outro usuário => 404.
     def set_bookcase
-      @bookcase = Bookcase.find(params.expect(:id))
+      @bookcase = current_user.bookcases.includes(books: :author).find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
     def bookcase_params
-      params.expect(bookcase: [ :limit ])
+      params.expect(bookcase: [ :name, :limit ])
     end
 end

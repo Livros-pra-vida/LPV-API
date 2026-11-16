@@ -3,6 +3,10 @@ class User < ApplicationRecord
 
   has_many :messages, dependent: :destroy
 
+  # Estantes são privadas: cada uma pertence a um único usuário.
+  has_many :bookcases, dependent: :destroy
+  has_many :books, through: :bookcases
+
   # Token de sessão (login e chat). Expira em 12 horas.
   generates_token_for :api_session, expires_in: 12.hours
 

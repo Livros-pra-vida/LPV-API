@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get "users/me", to: "users#me"
   
   resources :users
-  resources :books, only: [:index, :create, :update, :destroy]
+  resources :books, only: [:index, :show, :create, :update, :destroy]
   resources :book_listings, only: [:index, :create, :update, :destroy]
   resources :news, only: [:index, :create, :update, :destroy]
   

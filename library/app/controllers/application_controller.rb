@@ -1,4 +1,10 @@
 class ApplicationController < ActionController::API
+  # Registro inexistente OU de outro usuário (ex.: estante alheia) volta como 404,
+  # sem revelar se o registro existe.
+  rescue_from ActiveRecord::RecordNotFound do
+    render json: { error: "Não encontrado" }, status: :not_found
+  end
+
   private
 
   def current_user

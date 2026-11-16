@@ -13,3 +13,10 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+class ActionDispatch::IntegrationTest
+  # Cabeçalho Authorization com o token de sessão do usuário, como o front envia.
+  def auth_headers(user)
+    { "Authorization" => "Bearer #{user.generate_token_for(:api_session)}" }
+  end
+end

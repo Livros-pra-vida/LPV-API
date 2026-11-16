@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_190556) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_15_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,9 +23,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_190556) do
 
   create_table "bookcases", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "limit"
+    t.integer "limit", default: 50
     t.string "name"
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_bookcases_on_user_id"
   end
 
   create_table "books", force: :cascade do |t|
@@ -226,6 +228,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_190556) do
     t.string "username"
   end
 
+  add_foreign_key "bookcases", "users"
   add_foreign_key "books", "authors"
   add_foreign_key "books", "bookcases"
   add_foreign_key "messages", "users"

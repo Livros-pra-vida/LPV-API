@@ -1,7 +1,10 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# Cada estante pertence a um usuário diferente.
 one:
-  limit: 1
+  user: one
+  name: Favoritos
+  limit: 2
 
 two:
-  limit: 1
+  user: two
+  name: Segredos do Dois
+  limit: 5
