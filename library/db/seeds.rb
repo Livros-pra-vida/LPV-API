@@ -27,6 +27,27 @@ autores_por_nome = autores.to_h do |nome, descricao|
 end
 puts "Autores: #{Author.count}"
 
+# --- Catálogo da loja (livros que recebem avaliação pública) -----------------
+# Os títulos e autores precisam ser iguais aos de docs/src/Catalogo.html, porque o
+# front liga cada livro da página ao registro daqui pelo título.
+catalogo = [
+  [ "O Código Da Vinci",           "Dan Brown" ],
+  [ "Anjos e Demônios",            "Dan Brown" ],
+  [ "A Ilha do Tesouro",           "R. L. Stevenson" ],
+  [ "Orgulho e Preconceito",       "Jane Austen" ],
+  [ "É Assim que Começa",          "Colleen Hoover" ],
+  [ "A Menina que Roubava Livros", "Markus Zusak" ],
+  [ "Duna",                        "Frank Herbert" ],
+  [ "O Hobbit",                    "J.R.R. Tolkien" ],
+  [ "O Iluminado",                 "Stephen King" ],
+  [ "O Alquimista",                "Paulo Coelho" ]
+]
+
+catalogo.each do |titulo, autor|
+  CatalogBook.find_or_create_by!(title: titulo) { |livro| livro.author_name = autor }
+end
+puts "Livros do catálogo: #{CatalogBook.count}"
+
 # --- Usuários de demonstração, estantes privadas e livros --------------------
 criar_demo = !Rails.env.production? || ENV["SEED_DEMO_USERS"] == "true"
 

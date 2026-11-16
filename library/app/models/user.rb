@@ -7,6 +7,9 @@ class User < ApplicationRecord
   has_many :bookcases, dependent: :destroy
   has_many :books, through: :bookcases
 
+  # Avaliações públicas do catálogo (uma por livro).
+  has_many :ratings, dependent: :destroy
+
   # Token de sessão (login e chat). Expira em 12 horas.
   generates_token_for :api_session, expires_in: 12.hours
 

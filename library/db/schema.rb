@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_15_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_010100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,12 +42,32 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_120000) do
     t.index ["bookcase_id"], name: "index_books_on_bookcase_id"
   end
 
+  create_table "catalog_books", force: :cascade do |t|
+    t.string "author_name", null: false
+    t.datetime "created_at", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower((title)::text)", name: "index_catalog_books_on_lower_title", unique: true
+  end
+
   create_table "messages", force: :cascade do |t|
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "catalog_book_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "score", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["catalog_book_id"], name: "index_ratings_on_catalog_book_id"
+    t.index ["user_id", "catalog_book_id"], name: "index_ratings_on_user_id_and_catalog_book_id", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+    t.check_constraint "score >= 1 AND score <= 5", name: "ratings_score_between_1_and_5"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -232,6 +252,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_120000) do
   add_foreign_key "books", "authors"
   add_foreign_key "books", "bookcases"
   add_foreign_key "messages", "users"
+  add_foreign_key "ratings", "catalog_books"
+  add_foreign_key "ratings", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
