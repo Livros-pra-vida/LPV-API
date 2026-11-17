@@ -53,7 +53,13 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/:id
+  # O próprio usuário apaga a conta; um admin apaga a de qualquer usuário comum
+  # (mensagens, estantes, avaliações e anúncios dele somem junto), mas não a de outro admin.
   def destroy
+    if @user.admin? && @user.id != current_user.id
+      return render json: { error: "Não é possível excluir outro administrador" }, status: :forbidden
+    end
+
     @user.destroy
     head :no_content
   end

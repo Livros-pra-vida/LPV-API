@@ -1,9 +1,7 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
+do_leitor_um:
   user: one
-  content: MyString
+  content: Olá do leitor um
 
-two:
+do_leitor_dois:
   user: two
-  content: MyString
+  content: Olá do leitor dois

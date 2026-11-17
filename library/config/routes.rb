@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   resources :news, only: [:index, :create, :update, :destroy]
   
   # Catálogo da loja: lista pública com médias; avaliar exige login (1 nota por usuário e livro).
-  resources :catalog_books, only: [ :index ] do
+  # Adicionar e excluir livros do catálogo é só para admin.
+  resources :catalog_books, only: [ :index, :create, :destroy ] do
     resource :rating, only: [ :update, :destroy ], controller: "ratings"
   end
 

@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
     messages = Message.includes(:user).order(created_at: :asc).last(50)
     render json: messages.map { |m| {
       id: m.id,
+      user_id: m.user_id,
       username: m.user&.username || "Usuário",
       content: m.content,
       created_at: m.created_at
@@ -25,6 +26,7 @@ class MessagesController < ApplicationController
     if message.save
       render json: {
         id: message.id,
+        user_id: current_user.id,
         username: current_user.username,
         content: message.content,
         created_at: message.created_at
@@ -32,5 +34,14 @@ class MessagesController < ApplicationController
     else
       render json: { errors: message.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /messages/:id (somente admin): apaga a mensagem de qualquer pessoa.
+  # O model avisa os chats abertos para a mensagem sumir da tela na hora.
+  def destroy
+    return render json: { error: "Apenas administradores" }, status: :forbidden unless current_user.admin?
+
+    Message.find(params[:id]).destroy!
+    head :no_content
   end
 end

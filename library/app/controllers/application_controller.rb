@@ -18,4 +18,9 @@ class ApplicationController < ActionController::API
   def authenticate_user!
     render json: { error: "Não autorizado" }, status: :unauthorized unless current_user
   end
+
+  # Ações do administrador. A checagem é sempre aqui no servidor: o front só esconde os botões.
+  def require_admin!
+    render json: { error: "Apenas administradores" }, status: :forbidden unless current_user&.admin?
+  end
 end

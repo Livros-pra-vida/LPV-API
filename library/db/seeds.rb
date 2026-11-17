@@ -27,26 +27,53 @@ autores_por_nome = autores.to_h do |nome, descricao|
 end
 puts "Autores: #{Author.count}"
 
-# --- Catálogo da loja (livros que recebem avaliação pública) -----------------
-# Os títulos e autores precisam ser iguais aos de docs/src/Catalogo.html, porque o
-# front liga cada livro da página ao registro daqui pelo título.
+# --- Catálogo da loja (livros à venda, com avaliação pública) ----------------
+# Livros originais da loja (sem dono). O administrador adiciona e exclui outros pela página do
+# Catálogo. Atenção: rodar o seed de novo recria um livro original que o admin tenha excluído.
+capa = ->(isbn) { "https://covers.openlibrary.org/b/isbn/#{isbn}-L.jpg" }
+
 catalogo = [
-  [ "O Código Da Vinci",           "Dan Brown" ],
-  [ "Anjos e Demônios",            "Dan Brown" ],
-  [ "A Ilha do Tesouro",           "R. L. Stevenson" ],
-  [ "Orgulho e Preconceito",       "Jane Austen" ],
-  [ "É Assim que Começa",          "Colleen Hoover" ],
-  [ "A Menina que Roubava Livros", "Markus Zusak" ],
-  [ "Duna",                        "Frank Herbert" ],
-  [ "O Hobbit",                    "J.R.R. Tolkien" ],
-  [ "O Iluminado",                 "Stephen King" ],
-  [ "O Alquimista",                "Paulo Coelho" ]
+  [ "O Código Da Vinci", "Dan Brown", "Ação/Aventura", 42.90, "9780307474278", "Um assassinato no Museu do Louvre traz à tona uma conspiração para ocultar um segredo sagrado protegido por uma sociedade secreta durante séculos." ],
+  [ "Anjos e Demônios", "Dan Brown", "Ação/Aventura", 39.90, "9780743493468", "Robert Langdon tenta deter uma antiga fraternidade secreta que ameaça destruir a Cidade do Vaticano usando uma nova arma devastadora." ],
+  [ "A Ilha do Tesouro", "R. L. Stevenson", "Ação/Aventura", 29.90, "9780451527042", "O jovem Jim Hawkins encontra um mapa do tesouro e embarca em uma aventura inesquecível enfrentando piratas e o temível Long John Silver." ],
+  [ "Orgulho e Preconceito", "Jane Austen", "Romance", 34.90, "9780141439518", "Uma história clássica sobre a relação entre a perspicaz Elizabeth Bennet e o orgulhoso Sr. Darcy na Inglaterra do século XIX." ],
+  [ "É Assim que Começa", "Colleen Hoover", "Romance", 49.90, "9781668001226", "Lily Bloom continua navegando pelos desafios da vida após se separar, descobrindo novos caminhos e reencontrando o seu primeiro amor." ],
+  [ "A Menina que Roubava Livros", "Markus Zusak", "Drama", 42.00, "9780375842207", "Narrado pela Morte, acompanha a história da jovem Liesel Meminger durante a Segunda Guerra Mundial, encontrando alento nos livros que rouba." ],
+  [ "Duna", "Frank Herbert", "Ficção Científica", 69.90, "9780441172719", "Em um planeta desértico disputado por famílias nobres, o jovem Paul Atreides enfrenta política, religião e a natureza para cumprir seu destino." ],
+  [ "O Hobbit", "J.R.R. Tolkien", "Fantasia", 49.90, "9780547928227", "Bilbo Bolseiro é arrastado para uma jornada épica com anões e o mago Gandalf para reconquistar o tesouro guardado pelo dragão Smaug." ],
+  [ "O Iluminado", "Stephen King", "Terror/Mistério", 54.90, "9780307743657", "Jack Torrance aceita o emprego de caseiro num hotel isolado durante o inverno, mas forças misteriosas começam a afetar sua sanidade." ],
+  [ "O Alquimista", "Paulo Coelho", "Desenvolvimento/Filosofia", 34.90, "9780062315007", "A jornada do jovem pastor Santiago em busca de um tesouro nas pirâmides do Egito, aprendendo a escutar o seu coração e seguir seus sonhos." ]
 ]
 
-catalogo.each do |titulo, autor|
-  CatalogBook.find_or_create_by!(title: titulo) { |livro| livro.author_name = autor }
+catalogo.each do |titulo, autor, genero, preco, isbn, sinopse|
+  livro = CatalogBook.find_or_initialize_by(title: titulo)
+  # Só preenche livros novos ou ainda sem dados: nunca sobrescreve o que um admin já ajustou.
+  if livro.new_record? || livro.genre.blank?
+    livro.assign_attributes(author_name: autor, genre: genero, price: preco,
+                            image_url: capa.call(isbn), synopsis: sinopse)
+    livro.save!
+  end
 end
 puts "Livros do catálogo: #{CatalogBook.count}"
+
+# --- Anúncios de exemplo do Comprar & Trocar (anunciantes fictícios, sem conta) -----
+anuncios = [
+  { title: "A Biblioteca da Meia-Noite", author_name: "Matt Haig", modality: "Troca", region: "Taguatinga", seller_name: "Carla Mendes", reputation: "4.9 (14 trocas)",
+    image_url: "https://http2.mlstatic.com/D_NQ_NP_906176-MLA114707539172_082026-O.webp" },
+  { title: "Sapiens: Uma Breve História", author_name: "Yuval N. Harari", modality: "Doação", region: "Águas Claras", seller_name: "Marcos Vinicius", reputation: "5.0 (8 trocas)",
+    image_url: "https://m.media-amazon.com/images/I/71-ghLb8qML._AC_UF1000,1000_QL80_.jpg" },
+  { title: "Duna", author_name: "Frank Herbert", modality: "Venda", price: 35.00, region: "Asa Sul / Norte", status: "Em Negociacao", seller_name: "Beatriz Lima", reputation: "4.7 (21 vendas)",
+    image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlWw1rpe1Ny4V2JUHvKFh_rPmIFDA1kvLlc2eiUxk--Q_E9nX4B9NzMzY&s=10" },
+  { title: "O Pequeno Príncipe", author_name: "Antoine de Saint-Exupéry", modality: "Troca", region: "Taguatinga", seller_name: "Lucas Gabriel", reputation: "4.8 (5 trocas)",
+    image_url: "https://cdl-static.s3-sa-east-1.amazonaws.com/covers/gg/9788537814666/o-pequeno-principe-edicao-bolso-de-luxo-traducao-de-andre-telles-e-rodrigo-lacerda-vencedores-do-premio-jabuti.jpg" }
+]
+
+anuncios.each do |dados|
+  BookListing.find_or_create_by!(title: dados[:title], seller_name: dados[:seller_name], user_id: nil) do |anuncio|
+    anuncio.assign_attributes(dados)
+  end
+end
+puts "Anúncios: #{BookListing.count}"
 
 # --- Usuários de demonstração, estantes privadas e livros --------------------
 criar_demo = !Rails.env.production? || ENV["SEED_DEMO_USERS"] == "true"

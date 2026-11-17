@@ -1,0 +1,16 @@
+do_leitor_um:
+  title: Anúncio do Leitor Um
+  author_name: Autor A
+  modality: Troca
+  region: Taguatinga
+  status: Disponivel
+  reputation: "4.0 (2 trocas)"
+  user: one
+
+de_exemplo:
+  title: Anúncio de Exemplo
+  author_name: Autor B
+  modality: Venda
+  price: 20.00
+  region: Asa Sul / Norte
+  seller_name: Anunciante Fictício

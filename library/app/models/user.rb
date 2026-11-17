@@ -10,6 +10,11 @@ class User < ApplicationRecord
   # Avaliações públicas do catálogo (uma por livro).
   has_many :ratings, dependent: :destroy
 
+  # Anúncios do Comprar & Trocar somem junto com a conta; livros do catálogo cadastrados
+  # por um admin continuam existindo (o campo user_id fica nulo).
+  has_many :book_listings, dependent: :destroy
+  has_many :catalog_books, dependent: :nullify
+
   # Token de sessão (login e chat). Expira em 12 horas.
   generates_token_for :api_session, expires_in: 12.hours
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_010100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_010100) do
     t.string "description"
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "book_listings", force: :cascade do |t|
+    t.string "author_name", null: false
+    t.datetime "created_at", null: false
+    t.text "image_url"
+    t.string "modality", null: false
+    t.decimal "price", precision: 10, scale: 2
+    t.string "region"
+    t.string "reputation", default: "5.0 (1 troca)", null: false
+    t.string "seller_name"
+    t.string "status", default: "Disponivel", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_book_listings_on_user_id"
   end
 
   create_table "bookcases", force: :cascade do |t|
@@ -45,9 +61,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_010100) do
   create_table "catalog_books", force: :cascade do |t|
     t.string "author_name", null: false
     t.datetime "created_at", null: false
+    t.string "genre"
+    t.text "image_url"
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.text "synopsis"
     t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index "lower((title)::text)", name: "index_catalog_books_on_lower_title", unique: true
+    t.index ["user_id"], name: "index_catalog_books_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -248,9 +270,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_010100) do
     t.string "username"
   end
 
+  add_foreign_key "book_listings", "users"
   add_foreign_key "bookcases", "users"
   add_foreign_key "books", "authors"
   add_foreign_key "books", "bookcases"
+  add_foreign_key "catalog_books", "users", on_delete: :nullify
   add_foreign_key "messages", "users"
   add_foreign_key "ratings", "catalog_books"
   add_foreign_key "ratings", "users"
