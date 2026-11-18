@@ -88,6 +88,10 @@ senha_demo = ENV["SEED_DEMO_PASSWORD"].presence || SecureRandom.alphanumeric(16)
 senha_foi_gerada = ENV["SEED_DEMO_PASSWORD"].blank?
 senha_usada = false
 
+# O front envia a senha já com hash SHA-256 (hex, 64 caracteres) no login e no cadastro (CryptoJS).
+# Por isso o usuário de demonstração é criado com esse hash: ele entra digitando a senha normal.
+senha_digest = Digest::SHA256.hexdigest(senha_demo)
+
 # Cada usuário tem as suas próprias estantes. Ninguém vê a estante do outro.
 demo = [
   {
@@ -131,8 +135,8 @@ demo.each do |dados|
       email: dados[:email],
       cpf: "00000000000", # valor fictício, só para passar na validação de tamanho
       admin: false,
-      password: senha_demo,
-      password_confirmation: senha_demo
+      password: senha_digest,
+      password_confirmation: senha_digest
     )
     senha_usada = true
     puts "Usuário criado: #{dados[:email]}"
