@@ -17,6 +17,8 @@ class UsersController < ApplicationController
     @user = email.present? ? User.where("LOWER(email) = ?", email).first : nil
 
     if @user&.authenticate(params[:password].to_s)
+      return render json: { error: mensagem_suspensao(@user), suspended: true }, status: :forbidden if @user.suspended?
+
       render json: {
         token: @user.generate_token_for(:api_session),
         user: @user.as_owner_json,
@@ -56,11 +58,9 @@ class UsersController < ApplicationController
   # Trocar e-mail ou senha exige a senha atual (se alguém pegar o token, não toma a conta).
   def update
     if @user.id != current_user.id
-      # Admin mexendo em outra pessoa: só pode ligar/desligar o admin de um usuário comum.
-      return render json: { error: "Não é possível editar outro administrador" }, status: :forbidden if @user.admin?
-
-      return render json: @user.as_public_json if @user.update(params.require(:user).permit(:admin))
-      return render json: { errors: @user.errors.full_messages }, status: :unprocessable_content
+      # Ninguém edita os dados de outra pessoa por aqui. Admin usa o Painel do Administrador
+      # (suspender, reativar, tornar admin), e cada ação fica registrada.
+      return render json: { error: "Use o Painel do Administrador para moderar outra conta" }, status: :forbidden
     end
 
     dados = user_params
@@ -91,6 +91,7 @@ class UsersController < ApplicationController
     end
 
     @user.destroy
+    registrar_acao_admin("excluiu a conta", @user) if @user.id != current_user.id
     head :no_content
   end
 

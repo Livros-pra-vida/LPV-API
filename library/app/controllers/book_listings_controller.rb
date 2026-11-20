@@ -42,7 +42,9 @@ class BookListingsController < ApplicationController
 
   # DELETE /book_listings/:id (somente admin)
   def destroy
-    BookListing.find(params.expect(:id)).destroy!
+    anuncio = BookListing.find(params.expect(:id))
+    anuncio.destroy!
+    registrar_acao_admin("excluiu o anúncio", anuncio, "Anunciante: #{anuncio.seller}")
     head :no_content
   end
 

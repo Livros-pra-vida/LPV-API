@@ -23,6 +23,7 @@ class CatalogBooksController < ApplicationController
     book = CatalogBook.new(catalog_book_params.merge(user: current_user))
 
     if book.save
+      registrar_acao_admin("adicionou o livro ao catálogo", book)
       render json: book.as_summary(include_publisher: true), status: :created
     else
       render json: { errors: book.errors.full_messages }, status: :unprocessable_content
@@ -33,7 +34,9 @@ class CatalogBooksController < ApplicationController
 
   # DELETE /catalog_books/:id (somente admin). Apaga também as avaliações do livro.
   def destroy
-    CatalogBook.find(params.expect(:id)).destroy!
+    livro = CatalogBook.find(params.expect(:id))
+    livro.destroy!
+    registrar_acao_admin("removeu o livro do catálogo", livro)
     head :no_content
   end
 

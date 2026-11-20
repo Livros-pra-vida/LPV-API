@@ -1,6 +1,7 @@
 # Pedido feito a partir do carrinho. Guarda uma cópia dos itens e preços do momento da compra.
 class Order < ApplicationRecord
   SHIPPING = BigDecimal("10.00")
+  STATUSES = [ "Em separação", "Enviado", "Entregue", "Cancelado" ].freeze
 
   belongs_to :user
   has_many :order_items, dependent: :destroy
@@ -10,6 +11,7 @@ class Order < ApplicationRecord
 
   validates :payment_method, inclusion: { in: User::PAGAMENTOS }
   validates :address, presence: true
+  validates :status, inclusion: { in: STATUSES }
 
   # Cria o pedido com o carrinho do usuário (tudo ou nada) e esvazia o carrinho.
   def self.checkout!(user, payment_method)

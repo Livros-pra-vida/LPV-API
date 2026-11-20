@@ -35,5 +35,20 @@ Rails.application.routes.draw do
   resources :favorites, only: [ :index, :create, :destroy ] # :id = id do anúncio
   resources :wish_alerts, only: [ :index, :create, :destroy ]
 
+  # Novidades: todos leem, só admin publica
+  resources :news_posts, only: [ :index, :create, :update, :destroy ]
+
+  # Painel do Administrador
+  scope :admin, controller: :admin, as: :admin do
+    get "dashboard"
+    get "users"
+    post "users/:id/suspend", action: :suspend, as: :suspend_user
+    post "users/:id/reactivate", action: :reactivate, as: :reactivate_user
+    patch "users/:id/admin", action: :set_admin, as: :set_admin_user
+    get "orders"
+    patch "orders/:id", action: :update_order, as: :update_order
+    get "actions"
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

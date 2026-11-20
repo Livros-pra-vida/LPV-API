@@ -19,7 +19,21 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate_user!
-    render json: { error: "Não autorizado" }, status: :unauthorized unless current_user
+    return render json: { error: "Não autorizado" }, status: :unauthorized unless current_user
+
+    if current_user.suspended?
+      render json: { error: mensagem_suspensao(current_user), suspended: true }, status: :forbidden
+    end
+  end
+
+  def mensagem_suspensao(user)
+    motivo = user.suspended_reason.presence
+    "Sua conta está suspensa por um administrador#{motivo ? ". Motivo: #{motivo}" : ''}. Fale com o suporte."
+  end
+
+  # Guarda no registro de moderação o que o admin fez (aparece no Painel do Administrador).
+  def registrar_acao_admin(acao, alvo = nil, detalhes = nil)
+    AdminAction.registrar!(current_user, acao, alvo, detalhes)
   end
 
   # Ações do administrador. A checagem é sempre aqui no servidor: o front só esconde os botões.

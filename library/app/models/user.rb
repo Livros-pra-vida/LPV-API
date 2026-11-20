@@ -26,6 +26,10 @@ class User < ApplicationRecord
   has_many :conversations_as_seller, class_name: "Conversation", foreign_key: :seller_id, dependent: :destroy
   has_many :private_messages, dependent: :destroy
 
+  # Notícias publicadas (ficam no site mesmo se o admin sair) e ações de moderação registradas.
+  has_many :news_posts, dependent: :nullify
+  has_many :admin_actions, foreign_key: :admin_id, dependent: :nullify
+
   # Dados pessoais gravados CRIPTOGRAFADOS no banco (AES-256-GCM, Active Record Encryption).
   # Quem abrir a tabela no PostgreSQL vê só um texto embaralhado; a API descriptografa sozinha.
   encrypts :cpf, :telefone, :cep, :rua, :numero, :bairro, :cidade
@@ -94,6 +98,11 @@ class User < ApplicationRecord
     Digest::SHA256.hexdigest(senha.to_s)
   end
 
+  # Conta suspensa por um administrador: não entra, não escreve no chat nem anuncia.
+  def suspended?
+    suspended_at.present?
+  end
+
   def endereco_completo?
     [ cep, rua, bairro, cidade ].all?(&:present?)
   end
@@ -111,7 +120,8 @@ class User < ApplicationRecord
 
   # Dados que um admin vê de OUTRA pessoa: sem CPF, telefone, nascimento nem endereço completo (LGPD).
   def as_public_json
-    as_json(only: [ :id, :username, :email, :admin, :created_at, :avatar_url ]).merge("cidade" => cidade)
+    as_json(only: [ :id, :username, :email, :admin, :created_at, :avatar_url, :suspended_at, :suspended_reason ])
+      .merge("cidade" => cidade)
   end
 
   # Nunca devolve o hash da senha em nenhum JSON (index, show, login, update...)

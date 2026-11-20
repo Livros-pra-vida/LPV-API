@@ -4,6 +4,8 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   def speak(data)
+    return if current_user.reload.suspended? # suspenso depois de entrar no chat
+
     content = data["content"].to_s.strip
     return if content.blank?
 

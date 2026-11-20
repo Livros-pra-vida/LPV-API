@@ -45,7 +45,9 @@ class MessagesController < ApplicationController
   def destroy
     return render json: { error: "Apenas administradores" }, status: :forbidden unless current_user.admin?
 
-    Message.find(params[:id]).destroy!
+    mensagem = Message.find(params[:id])
+    mensagem.destroy!
+    registrar_acao_admin("apagou a mensagem do chat", mensagem, "Autor: #{mensagem.user&.username}")
     head :no_content
   end
 end
