@@ -28,6 +28,7 @@ module Library
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+<<<<<<< HEAD
 
     # Fuso e idioma do Brasil (datas das mensagens e pedidos).
     config.time_zone = "Brasilia"
@@ -53,5 +54,7 @@ module Library
     end
     # Dados antigos (gravados antes da criptografia) continuam legíveis até rodar: bin/rails lpv:criptografar
     config.active_record.encryption.support_unencrypted_data = true
+=======
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   end
 end

@@ -2,10 +2,13 @@ class BookListingsController < ApplicationController
   before_action :authenticate_user!, only: %i[ create update destroy ]
   before_action :require_admin!, only: %i[ destroy ]
 
+<<<<<<< HEAD
   # Evita que alguém encha o banco de anúncios (cada um pode ter imagem de até 400 KB).
   rate_limit to: 10, within: 10.minutes, only: :create, by: -> { current_user.id },
              with: -> { render json: { errors: [ "Muitos anúncios seguidos. Aguarde alguns minutos." ] }, status: :too_many_requests }
 
+=======
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   # GET /book_listings (público): anúncios do Comprar & Trocar, do mais novo para o mais antigo.
   def index
     render json: BookListing.includes(:user).order(created_at: :desc, id: :desc).map(&:as_summary)

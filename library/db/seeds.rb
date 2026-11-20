@@ -3,7 +3,11 @@
 #
 #   bin/rails db:seed                          # desenvolvimento / teste
 #   SEED_DEMO_USERS=true bin/rails db:seed     # produção (cria os usuários de demonstração)
+<<<<<<< HEAD
 #   SEED_DEMO_PASSWORD=OutraSenha@123 ...       # opcional: define a senha dos usuários de demonstração
+=======
+#   SEED_DEMO_PASSWORD=outraSenha123 ...       # opcional: define a senha dos usuários de demonstração
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 #
 # Em produção, sem SEED_DEMO_USERS=true, só o cadastro de autores é criado
 # (contas de demonstração com senha conhecida não devem existir por engano).
@@ -84,12 +88,22 @@ unless criar_demo
   return
 end
 
+<<<<<<< HEAD
 # Senha gerada já cumpre as regras (maiúscula, número e caractere especial).
 senha_demo = ENV["SEED_DEMO_PASSWORD"].presence || "#{SecureRandom.alphanumeric(10)}Aa1!"
 senha_foi_gerada = ENV["SEED_DEMO_PASSWORD"].blank?
 senha_usada = false
 
 # A API recebe a senha pura e faz o SHA-256 + bcrypt sozinha (veja User#password=).
+=======
+senha_demo = ENV["SEED_DEMO_PASSWORD"].presence || SecureRandom.alphanumeric(16)
+senha_foi_gerada = ENV["SEED_DEMO_PASSWORD"].blank?
+senha_usada = false
+
+# O front envia a senha já com hash SHA-256 (hex, 64 caracteres) no login e no cadastro (CryptoJS).
+# Por isso o usuário de demonstração é criado com esse hash: ele entra digitando a senha normal.
+senha_digest = Digest::SHA256.hexdigest(senha_demo)
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 
 # Cada usuário tem as suas próprias estantes. Ninguém vê a estante do outro.
 demo = [
@@ -134,8 +148,13 @@ demo.each do |dados|
       email: dados[:email],
       cpf: "00000000000", # valor fictício, só para passar na validação de tamanho
       admin: false,
+<<<<<<< HEAD
       password: senha_demo,
       password_confirmation: senha_demo
+=======
+      password: senha_digest,
+      password_confirmation: senha_digest
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
     )
     senha_usada = true
     puts "Usuário criado: #{dados[:email]}"

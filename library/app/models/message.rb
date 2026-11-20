@@ -2,10 +2,13 @@
 class Message < ApplicationRecord
   belongs_to :user
 
+<<<<<<< HEAD
   # Texto do chat global gravado CRIPTOGRAFADO no banco (as mensagens antigas, ainda sem
   # criptografia, continuam legíveis e são convertidas pelo comando bin/rails lpv:criptografar).
   encrypts :content
 
+=======
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   validates :content, presence: true, length: { maximum: 500 }
 
   after_create_commit :broadcast_message

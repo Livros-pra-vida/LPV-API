@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :authorize_self!, only: %i[ show update destroy ]
   before_action :set_user, only: %i[ show update destroy ]
 
+<<<<<<< HEAD
   # Proteção contra força bruta: no máximo 10 tentativas de login e 5 cadastros
   # por IP a cada 3 minutos. Depois disso a API responde 429 (muitas tentativas).
   rate_limit to: 10, within: 3.minutes, only: :login,
@@ -20,6 +21,15 @@ class UsersController < ApplicationController
       render json: {
         token: @user.generate_token_for(:api_session),
         user: @user.as_owner_json,
+=======
+  # POST /users/login
+  def login
+    @user = User.find_by(email: params[:email])
+    if @user&.authenticate(params[:password])
+      render json: {
+        token: @user.generate_token_for(:api_session),
+        user: @user,
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
         message: "Login realizado com sucesso!"
       }, status: :ok
     else
@@ -29,6 +39,7 @@ class UsersController < ApplicationController
 
   # GET /users/me
   def me
+<<<<<<< HEAD
     render json: current_user.as_owner_json, status: :ok
   end
 
@@ -40,19 +51,39 @@ class UsersController < ApplicationController
   # GET /users/:id   o dono vê tudo; o admin vendo outra pessoa vê só o básico.
   def show
     render json: json_para(@user)
+=======
+    render json: current_user, status: :ok
+  end
+
+  # GET /users (somente admin)
+  def index
+    render json: User.all
+  end
+
+  # GET /users/:id
+  def show
+    render json: @user
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   end
 
   # POST /users
   def create
     @user = User.new(user_params)
     if @user.save
+<<<<<<< HEAD
       render json: { token: @user.generate_token_for(:api_session), user: @user.as_owner_json }, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_content
+=======
+      render json: { token: @user.generate_token_for(:api_session), user: @user }, status: :created
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
     end
   end
 
   # PATCH/PUT /users/:id
+<<<<<<< HEAD
   # Trocar e-mail ou senha exige a senha atual (se alguém pegar o token, não toma a conta).
   def update
     if @user.id != current_user.id
@@ -79,6 +110,13 @@ class UsersController < ApplicationController
       render json: resposta, status: :ok
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_content
+=======
+  def update
+    if @user.update(user_params)
+      render json: @user, status: :ok
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
     end
   end
 
@@ -100,19 +138,38 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+<<<<<<< HEAD
   def json_para(user)
     user.id == current_user.id ? user.as_owner_json : user.as_public_json
   end
 
+=======
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   # Só o próprio usuário (ou um admin) pode ver, editar ou apagar a conta.
   def authorize_self!
     head :forbidden unless params[:id].to_s == current_user.id.to_s || current_user.admin?
   end
 
+<<<<<<< HEAD
   def user_params
     params.require(:user).permit(
       :username, :email, :password, :password_confirmation, :telefone, :nascimento, :cpf,
       :cep, :rua, :numero, :bairro, :cidade, :pagamento_favorito, :avatar_url
     )
+=======
+  def require_admin!
+    head :forbidden unless current_user.admin?
+  end
+
+  def user_params
+    permitidos = [
+      :username, :email, :password, :telefone, :nascimento,
+      :cpf, :cep, :rua, :numero, :bairro, :cidade,
+      :pagamento_favorito, :avatar_url
+    ]
+    # Só um admin logado pode alterar o campo admin. No cadastro ninguém vira admin.
+    permitidos << :admin if current_user&.admin?
+    params.require(:user).permit(*permitidos)
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   end
 end

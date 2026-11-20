@@ -1,7 +1,10 @@
 class CatalogBook < ApplicationRecord
   has_many :ratings, dependent: :destroy
+<<<<<<< HEAD
   has_many :cart_items, dependent: :destroy
   has_many :order_items, dependent: :nullify
+=======
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 
   # Admin que cadastrou o livro (nulo nos livros originais da loja).
   belongs_to :user, optional: true

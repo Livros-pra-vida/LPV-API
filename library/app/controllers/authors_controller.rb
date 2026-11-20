@@ -49,6 +49,13 @@ class AuthorsController < ApplicationController
       @author = Author.find(params.expect(:id))
     end
 
+<<<<<<< HEAD
+=======
+    def require_admin!
+      head :forbidden unless current_user.admin?
+    end
+
+>>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
     # Only allow a list of trusted parameters through.
     def author_params
       params.expect(author: [ :name, :description ])
