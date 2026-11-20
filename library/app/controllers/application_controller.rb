@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::API
+  # Senhas podem chegar criptografadas pelo navegador (veja concerns/senha_criptografada.rb).
+  include SenhaCriptografada
+
   # Registro inexistente OU de outro usuário (ex.: estante alheia) volta como 404,
   # sem revelar se o registro existe.
   rescue_from ActiveRecord::RecordNotFound do

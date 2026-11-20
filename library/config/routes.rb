@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   post "users/login", to: "users#login"
+  get "auth/public_key", to: "auth#public_key" # chave para criptografar a senha no navegador
   get "users/me", to: "users#me"
 
   resources :users
