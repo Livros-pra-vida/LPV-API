@@ -1,7 +1,6 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-<<<<<<< HEAD
   # O front manda a senha pura (por HTTPS); a API confere as regras e faz SHA-256 + bcrypt.
   SENHA = "Senha@123"
 
@@ -146,40 +145,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_difference("User.count", -1) do
       delete user_url(users(:two)), headers: auth_headers(users(:two)), as: :json
     end
-=======
-  setup do
-    @user = users(:one)
-  end
-
-  test "should get index" do
-    get users_url, as: :json
-    assert_response :success
-  end
-
-  test "should create user" do
-    assert_difference("User.count") do
-      post users_url, params: { user: { admin: @user.admin, email: @user.email, password_digest: @user.password_digest, username: @user.username } }, as: :json
-    end
-
-    assert_response :created
-  end
-
-  test "should show user" do
-    get user_url(@user), as: :json
-    assert_response :success
-  end
-
-  test "should update user" do
-    patch user_url(@user), params: { user: { admin: @user.admin, email: @user.email, password_digest: @user.password_digest, username: @user.username } }, as: :json
-    assert_response :success
-  end
-
-  test "should destroy user" do
-    assert_difference("User.count", -1) do
-      delete user_url(@user), as: :json
-    end
-
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
     assert_response :no_content
   end
 end

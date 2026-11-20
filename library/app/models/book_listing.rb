@@ -3,11 +3,8 @@ class BookListing < ApplicationRecord
   STATUSES = [ "Disponivel", "Em Negociacao", "Indisponivel" ].freeze
 
   belongs_to :user, optional: true # anúncios de exemplo não têm dono
-<<<<<<< HEAD
   has_many :favorites, dependent: :destroy
   has_many :conversations, dependent: :nullify
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 
   validates :title, presence: true, length: { maximum: 200 }
   validates :author_name, presence: true, length: { maximum: 200 }

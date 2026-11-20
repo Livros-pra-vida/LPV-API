@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema[8.1].define(version: 2026_11_19_200500) do
-=======
-ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -62,7 +58,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
     t.index ["bookcase_id"], name: "index_books_on_bookcase_id"
   end
 
-<<<<<<< HEAD
   create_table "cart_items", force: :cascade do |t|
     t.bigint "catalog_book_id", null: false
     t.datetime "created_at", null: false
@@ -75,8 +70,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
     t.check_constraint "quantity >= 1 AND quantity <= 20", name: "cart_items_quantity_range"
   end
 
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   create_table "catalog_books", force: :cascade do |t|
     t.string "author_name", null: false
     t.datetime "created_at", null: false
@@ -91,7 +84,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
     t.index ["user_id"], name: "index_catalog_books_on_user_id"
   end
 
-<<<<<<< HEAD
   create_table "conversations", force: :cascade do |t|
     t.bigint "book_listing_id"
     t.bigint "buyer_id", null: false
@@ -118,17 +110,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
 
   create_table "messages", force: :cascade do |t|
     t.text "content"
-=======
-  create_table "messages", force: :cascade do |t|
-    t.string "content"
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-<<<<<<< HEAD
   create_table "order_items", force: :cascade do |t|
     t.bigint "catalog_book_id"
     t.datetime "created_at", null: false
@@ -167,8 +154,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
     t.index ["user_id"], name: "index_private_messages_on_user_id"
   end
 
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   create_table "ratings", force: :cascade do |t|
     t.bigint "catalog_book_id", null: false
     t.datetime "created_at", null: false
@@ -348,7 +333,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
   end
 
   create_table "users", force: :cascade do |t|
-<<<<<<< HEAD
     t.boolean "admin", default: false, null: false
     t.text "avatar_url"
     t.text "bairro"
@@ -374,24 +358,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_wish_alerts_on_user_id"
-=======
-    t.boolean "admin"
-    t.string "cpf"
-    t.datetime "created_at", null: false
-    t.string "email"
-    t.date "nascimento"
-    t.string "password_digest"
-    t.string "telefone"
-    t.datetime "updated_at", null: false
-    t.string "username"
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   end
 
   add_foreign_key "book_listings", "users"
   add_foreign_key "bookcases", "users"
   add_foreign_key "books", "authors"
   add_foreign_key "books", "bookcases"
-<<<<<<< HEAD
   add_foreign_key "cart_items", "catalog_books", on_delete: :cascade
   add_foreign_key "cart_items", "users", on_delete: :cascade
   add_foreign_key "catalog_books", "users", on_delete: :nullify
@@ -406,10 +378,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
   add_foreign_key "orders", "users", on_delete: :cascade
   add_foreign_key "private_messages", "conversations", on_delete: :cascade
   add_foreign_key "private_messages", "users"
-=======
-  add_foreign_key "catalog_books", "users", on_delete: :nullify
-  add_foreign_key "messages", "users"
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   add_foreign_key "ratings", "catalog_books"
   add_foreign_key "ratings", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
@@ -420,8 +388,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_120100) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-<<<<<<< HEAD
   add_foreign_key "wish_alerts", "users", on_delete: :cascade
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 end

@@ -15,7 +15,6 @@ class User < ApplicationRecord
   has_many :book_listings, dependent: :destroy
   has_many :catalog_books, dependent: :nullify
 
-<<<<<<< HEAD
   # Carrinho, pedidos, favoritos e alertas de livro desejado (antes ficavam só no navegador).
   has_many :cart_items, dependent: :destroy
   has_many :orders, dependent: :destroy
@@ -114,18 +113,6 @@ class User < ApplicationRecord
   def as_public_json
     as_json(only: [ :id, :username, :email, :admin, :created_at, :avatar_url ]).merge("cidade" => cidade)
   end
-=======
-  # Token de sessão (login e chat). Expira em 12 horas.
-  generates_token_for :api_session, expires_in: 12.hours
-
-  validates :username, presence: true
-
-  validates :email, presence: true, uniqueness: true
-
-  validates :password, length: { minimum: 8 }, if: -> { password.present? }
-
-  validates :cpf, length: { minimum: 11, maximum: 11 }, if: -> { password.present? }
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 
   # Nunca devolve o hash da senha em nenhum JSON (index, show, login, update...)
   def serializable_hash(options = nil)
@@ -133,7 +120,6 @@ class User < ApplicationRecord
     options[:except] = Array(options[:except]) | [ :password_digest ]
     super(options)
   end
-<<<<<<< HEAD
 
   private
 
@@ -143,6 +129,4 @@ class User < ApplicationRecord
     faltando = REGRAS_SENHA.reject { |_, regra| regra.call(@senha_digitada) }.keys
     errors.add(:password, "precisa #{faltando.to_sentence(last_word_connector: ' e ')}") if faltando.any?
   end
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 end

@@ -13,14 +13,6 @@ class BooksController < ApplicationController
     render json: @books
   end
 
-<<<<<<< HEAD
-=======
-  # esse método ta sendo chamado la no routes para teste
-  def teste
-    render json: { message: "Teste de rota" }
-  end
-
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   # GET /books/1
   def show
     render json: @book

@@ -2,12 +2,8 @@ class Book < ApplicationRecord
   belongs_to :bookcase
   belongs_to :author
 
-<<<<<<< HEAD
   validates :title, presence: true, length: { maximum: 200 }
   validates :rating, numericality: { only_integer: true, in: 1..5 }, allow_nil: true
-=======
-  validates :title, presence: true
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   validate :bookcase_within_limit, if: -> { new_record? || will_save_change_to_bookcase_id? }
 
   def author_name

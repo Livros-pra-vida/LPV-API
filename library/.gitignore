@@ -9,10 +9,7 @@
 
 # Ignore all environment files.
 /.env*
-<<<<<<< HEAD
 !/.env.example
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -35,9 +32,6 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
-<<<<<<< HEAD
 
 # Log local do script de configuração
 /configurar_banco.log
-=======
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426

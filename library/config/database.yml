@@ -24,16 +24,11 @@ development:
   <<: *default
   database: library_development
 
-<<<<<<< HEAD
 # O banco de teste NUNCA usa o DATABASE_URL (senão rodar os testes apagaria o banco de desenvolvimento).
 # Para apontar para outro servidor nos testes, use TEST_DATABASE_URL.
 test:
   adapter: postgresql
   url: <%= ENV["TEST_DATABASE_URL"] %>
-=======
-test:
-  <<: *default
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
   database: library_test
 
 production:

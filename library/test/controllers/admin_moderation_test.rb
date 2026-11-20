@@ -34,11 +34,7 @@ class AdminModerationTest < ActionDispatch::IntegrationTest
   end
 
   test "admin não exclui outro admin" do
-<<<<<<< HEAD
     outro = User.create!(username: "outro_admin", email: "outro@example.com", password: "Senha-Longa-123",
-=======
-    outro = User.create!(username: "outro_admin", email: "outro@example.com", password: "senha-longa-123",
->>>>>>> 821dca3581cf39540ec51ae425d239e22b7d4426
                          cpf: "44444444444", admin: true)
     assert_no_difference("User.count") do
       delete user_url(outro), headers: auth_headers(users(:admin)), as: :json
