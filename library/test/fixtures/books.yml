@@ -1,0 +1,14 @@
+# book one está na estante do usuário um; book two na estante do usuário dois.
+one:
+  title: Livro do Um
+  rating: 5
+  bookcase: one
+  author: one
+  release: 2026-08-31
+
+two:
+  title: Livro do Dois
+  rating: 4
+  bookcase: two
+  author: two
+  release: 2026-08-31

@@ -1,0 +1,12 @@
+one:
+  title: Livro do Catálogo Um
+  author_name: Autor Um
+  genre: Romance
+  price: 30.00
+
+two:
+  title: Livro do Catálogo Dois
+  author_name: Autor Dois
+  genre: Drama
+  price: 45.50
+  user: admin

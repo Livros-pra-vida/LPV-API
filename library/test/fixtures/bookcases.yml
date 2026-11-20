@@ -1,0 +1,10 @@
+# Cada estante pertence a um usuário diferente.
+one:
+  user: one
+  name: Favoritos
+  limit: 2
+
+two:
+  user: two
+  name: Segredos do Dois
+  limit: 5

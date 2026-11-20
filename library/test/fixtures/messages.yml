@@ -1,0 +1,7 @@
+do_leitor_um:
+  user: one
+  content: Olá do leitor um
+
+do_leitor_dois:
+  user: two
+  content: Olá do leitor dois

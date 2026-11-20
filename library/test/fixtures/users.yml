@@ -1,0 +1,21 @@
+# Dois leitores comuns (para testar privacidade) e um admin.
+one:
+  username: leitor_um
+  email: um@example.com
+  password_digest: "não usado nos testes (o token é gerado direto)"
+  admin: false
+  cpf: "11111111111"
+
+two:
+  username: leitor_dois
+  email: dois@example.com
+  password_digest: "não usado nos testes (o token é gerado direto)"
+  admin: false
+  cpf: "22222222222"
+
+admin:
+  username: administrador
+  email: admin@example.com
+  password_digest: "não usado nos testes (o token é gerado direto)"
+  admin: true
+  cpf: "33333333333"

@@ -1,0 +1,5 @@
+# O leitor "two" já avaliou o livro "one" do catálogo com nota 4.
+dois_no_um:
+  user: two
+  catalog_book: one
+  score: 4
